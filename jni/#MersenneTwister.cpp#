@@ -1,0 +1,40 @@
+#include <jni.h>
+#include <android/log.h>
+
+#include <MersenneTwister.h>/#include <vnd_blueararat_Efoto_MTRNGJNILib.h>
+#define  LOG_TAG    "mtrng2jni"
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+
+//static MTRand mtrand1;
+
+extern "C" {
+/*
+ * Class:     vnd_blueararat_Efoto_MTRNGJNILib
+ * Method:    rand
+ * Signature: ()D
+ */
+JNIEXPORT jfloat JNICALL Java_vnd_blueararat_Efoto_MTRNGJNILib_rand
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     vnd_blueararat_Efoto_MTRNGJNILib
+ * Method:    randInt
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_vnd_blueararat_Efoto_MTRNGJNILib_randInt
+  (JNIEnv *, jclass);
+}
+
+JNIEXPORT jfloat JNICALL JNICALL Java_vnd_blueararat_Efoto_MTRNGJNILib_rand(JNIEnv *, jclass)
+{
+	MTRand mtrand1;
+	float f = mtrand1.rand();
+	return f;
+}
+
+JNIEXPORT jlong JNICALL Java_vnd_blueararat_Efoto_MTRNGJNILib_randInt(JNIEnv *, jclass)
+{
+	MTRand mtrand1;
+	return mtrand1.randInt();
+}

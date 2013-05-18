@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vnd.blueararat.Effoto.WrappingSlidingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:efoto="vnd.blueararat.Efoto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:content="@+id/maincontent"
+    android:handle="@+id/mainhandle"
+    efoto:align="0" >
+
+    <ImageButton
+        android:id="@+id/mainhandle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sd_normal" />
+
+    <HorizontalScrollView
+        android:id="@+id/maincontent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bd1"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:id="@+id/maincontainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal"
+            android:padding="2dp" >
+
+            <!--
+                 <vnd.blueararat.Efoto.CustomToggleButton
+                android:id="@+id/ef13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bottom_button"
+                android:src="@drawable/ef1" />
+            -->
+
+            <Button
+                android:id="@+id/addNewEf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/add_new_ef"
+                android:onClick="addEffectOnClick"
+                android:text="+"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</vnd.blueararat.Effoto.WrappingSlidingDrawer>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@color/bd1"
+        android:orientation="vertical"
+        android:padding="2dp" >
+
+        <vnd.blueararat.Effoto.ColorPickerView
+            android:id="@+id/ColorPickerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioGroup
+                android:id="@+id/radiogroup1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/normal"
+                    android:text="@string/normal" />
+
+                <RadioButton
+                    android:id="@+id/blur"
+                    android:text="@string/blur" />
+
+                <RadioButton
+                    android:id="@+id/emboss"
+                    android:text="@string/emboss" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/radiogroup2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/color"
+                    android:text="@string/color" />
+
+                <RadioButton
+                    android:id="@+id/rainbow"
+                    android:text="@string/rainbow" />
+
+                <RadioButton
+                    android:id="@+id/none"
+                    android:text="@string/none" />
+            </RadioGroup>
+            <!--
+             <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1" >
+
+            <Button
+                android:id="@+id/ok_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@android:string/ok" />
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@android:string/cancel" />
+            -->
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/width" />
+
+            <EditText
+                android:id="@+id/strokewidth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:inputType="numberDecimal"
+                android:minEms="3" />
+
+            <SeekBar
+                android:id="@+id/strokewidth_seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="20" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="top"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip"
+    android:textAppearance="?android:attr/textAppearanceSmall" /> -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:minWidth="196dip"
+    android:orientation="vertical"
+    android:paddingEnd="16dip"
+    android:paddingStart="16dip" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:duplicateParentState="true" >
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dip"
+            android:duplicateParentState="true" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:duplicateParentState="true"
+            android:ellipsize="middle"
+            android:fadingEdge="horizontal"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+</LinearLayout>
+

@@ -1,0 +1,63 @@
+<resources>
+
+    <!-- <string name="add_text">Текст</string> -->
+    <string name="background">Цвет фона</string>
+    <string name="blur">Размытие</string>
+    <string name="cant_read_folder">папку нельзя читать!</string>
+    <string name="cant_save_picture_to">Не могу сохранить картинки в</string>
+    <string name="cant_write_to_this_folder">не могу записывать в эту папку</string>
+    <string name="choose_format">Формат картинки</string>
+    <string name="circle">Круг</string>
+    <string name="circles">Круги</string>
+    <string name="clip">Вырежь</string>
+    <string name="color">Цвет</string>
+    <string name="create">Сохрани</string>
+    <string name="darkness">"Темнота "</string>
+    <string name="dir_doesnt_exist">выходной папки ещё нет</string>
+    <string name="double_tap">Шкаль насыщенность (2-касание)</string>
+    <string name="edit_file_name">Измени имя файла</string>
+    <string name="emboss">Чеканка</string>
+    <!--
+         <string name="error">ошибка</string>
+    <string name="error_copying_exif">"(ошибка при записи EXIF) "</string>
+    -->
+    <string name="exif">Оставь EXIF</string>
+    <string name="exists">пропускаю (уже есть)</string>
+    <string name="folder">Папка для сохранения</string>
+    <string name="folder_select">Выбери</string>
+    <string name="folder_name">Имя папки</string>
+    <!-- <string name="fill_with_text">Заполни текстом</string> -->
+    <string name="fit">Подгони</string>
+    <!--
+         <string name="font">Шрифт</string>
+    <string name="font_select">Выберите шрифт</string>
+    <string name="help">Меняйте ширину и высоту волн 1-касанием, форму волн 2-касанием, ширину и высоту рамки 3-касанием (при отключенном подгоне)\n</string>
+    -->
+    <string name="jpeg_quality">JPEG сжатие</string>
+    <string name="media_scanner">Поиск медиа</string>
+    <string name="media_scanner_desc">Нажми чтобы найти новые изображения и добавить их в галерею</string>
+    <string name="media_scanning">Ищу...</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="nnew">Новая</string>
+    <string name="no_data">Нет данных</string>
+    <string name="none">Ничего</string>
+    <string name="normal">Норма</string>
+    <string name="of">" из "</string>
+    <string name="open">Открой</string>
+    <string name="picture_saved_to">Картинка сохранена в</string>
+    <string name="pictures_will_be_saved">Картинки будут сохранены как</string>
+    <string name="postmark">Почтовая марка</string>
+    <string name="rainbow">Радуга</string>
+    <string name="saturation">"Насыщенность "</string>
+    <string name="save_format">Формат сохранения</string>
+    <string name="save">Сохранение</string>
+    <string name="just_save_image">Только сохрани</string>
+    <string name="select">Готово</string>
+    <string name="settings">Настройки</string>
+    <string name="tool">Инструмент</string>
+    <string name="transparency">"Прозрачность "</string>
+    <string name="waves">Волны</string>
+    <string name="width">"Ширина "</string>
+    <string name="only_border">Только вокруг</string>
+
+</resources>

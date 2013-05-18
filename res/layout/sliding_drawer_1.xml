@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vnd.blueararat.Effoto.WrappingSlidingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/slidingDrawer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:content="@+id/content"
+    android:handle="@+id/handle" >
+
+    <Button
+        android:id="@+id/handle"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/sd_empty"
+        android:textColor="@android:color/white" />
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/bd1"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/scale_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Density"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <SeekBar
+                android:id="@+id/scale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="249"
+                android:progress="99" />
+
+            <TextView
+                android:id="@+id/scale_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/radius_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Radius "
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <SeekBar
+                android:id="@+id/radius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="299"
+                android:progress="99" />
+
+            <TextView
+                android:id="@+id/radius_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/opacity_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Opacity"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <SeekBar
+                android:id="@+id/opacity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="254"
+                android:progress="254" />
+
+            <TextView
+                android:id="@+id/opacity_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/rnd_pos_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Randomness\nof position"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <SeekBar
+                android:id="@+id/rnd_pos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="1000"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/rnd_pos_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/rnd_size_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Randomness\n of size"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <SeekBar
+                android:id="@+id/rnd_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="1000"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/rnd_size_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/blur_rad_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Blur radius"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <SeekBar
+                android:id="@+id/blur_rad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="50"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/blur_rad_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+</vnd.blueararat.Effoto.WrappingSlidingDrawer>

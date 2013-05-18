@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vnd.blueararat.Effoto.WrappingSlidingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/slidingDrawer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:content="@+id/content2"
+    android:handle="@+id/handle2" >
+
+    <Button
+        android:id="@+id/handle2"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/sd_empty"
+        android:textColor="@android:color/white" />
+
+    <vnd.blueararat.Effoto.WaveSettingsLayout
+        android:id="@+id/content2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" />
+
+    <!-- layout="vnd.blueararat.Efoto.WaveSettingsLayout" /> -->
+    <!--
+         <LinearLayout
+        android:id="@+id/content2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:padding="8dip" >
+
+        <vnd.blueararat.Efoto.ColorPickerView
+            android:id="@+id/ColorPickerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioGroup
+                android:id="@+id/radiogroup1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/normal"
+                    android:text="@string/normal" />
+
+                <RadioButton
+                    android:id="@+id/blur"
+                    android:text="@string/blur" />
+
+                <RadioButton
+                    android:id="@+id/emboss"
+                    android:text="@string/emboss" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/radiogroup2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/color"
+                    android:text="@string/color" />
+
+                <RadioButton
+                    android:id="@+id/rainbow"
+                    android:text="@string/rainbow" />
+
+                <RadioButton
+                    android:id="@+id/none"
+                    android:text="@string/none" />
+            </RadioGroup>
+            
+             <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1" >
+
+            <Button
+                android:id="@+id/ok_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@android:string/ok" />
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@android:string/cancel" />
+           
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/width" />
+
+            <EditText
+                android:id="@+id/strokewidth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:inputType="numberDecimal"
+                android:minEms="3" />
+
+            <SeekBar
+                android:id="@+id/strokewidth_seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="20" />
+        </LinearLayout>
+    </LinearLayout>
+    -->
+
+
+    <!--
+         <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/bd1"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/wave_height_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wave height"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <SeekBar
+                android:id="@+id/height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="249"
+                android:progress="99" />
+
+            <TextView
+                android:id="@+id/height_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/number_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Number "
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <SeekBar
+                android:id="@+id/number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="299"
+                android:progress="99" />
+
+            <TextView
+                android:id="@+id/number_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/width_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Width"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <SeekBar
+                android:id="@+id/width"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="254"
+                android:progress="254" />
+
+            <TextView
+                android:id="@+id/width_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/rnd_pos_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Randomness\nof position"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <SeekBar
+                android:id="@+id/rnd_pos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="1000"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/rnd_pos_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/rnd_size_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Randomness\n of size"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <SeekBar
+                android:id="@+id/rnd_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="1000"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/rnd_size_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/blur_rad_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Blur radius"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <SeekBar
+                android:id="@+id/blur_rad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="50"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/blur_rad_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    -->
+
+</vnd.blueararat.Effoto.WrappingSlidingDrawer>

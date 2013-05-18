@@ -1,0 +1,39 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/menu_settings"/>
+    <item
+        android:id="@+id/open"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:showAsAction="ifRoom"
+        android:title="@string/open"/>
+    <item
+        android:id="@+id/menu_item_share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:showAsAction="ifRoom"
+        android:title="Share"/>
+    <item
+        android:id="@+id/fit"
+        android:checkable="true"
+        android:title="@string/fit"/>
+    <item
+        android:id="@+id/postmark"
+        android:title="@string/postmark"/>
+    <item
+        android:id="@+id/circle"
+        android:checkable="true"
+        android:title="@string/circle"/>
+    <item
+        android:id="@+id/clip"
+        android:checkable="true"
+        android:title="@string/clip"/>
+    <item
+        android:id="@+id/only_border"
+        android:checkable="true"
+        android:title="@string/only_border"/>
+
+</menu>
