@@ -22,6 +22,7 @@
     <string name="error_copying_exif">"(ошибка при записи EXIF) "</string>
     -->
     <string name="exif">Оставь EXIF</string>
+    <string name="exif_sum">Сохрани метаданные EXIF</string>
     <string name="exists">пропускаю (уже есть)</string>
     <string name="folder">Папка для сохранения</string>
     <string name="folder_select">Выбери</string>
