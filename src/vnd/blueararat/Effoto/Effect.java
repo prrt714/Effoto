@@ -159,22 +159,24 @@ public abstract class Effect {
 	}
 
 	protected void activate() {
-		active = true;
-		if (ma.getCurrentEffect() != null)
-			ma.getCurrentEffect().deactivate();
+		if (!active) {
+			active = true;
+			if (ma.getCurrentEffect() != null)
+				ma.getCurrentEffect().deactivate();
 
-		ma.setCurrentEffect(this);
-		WrappingSlidingDrawer vw = (WrappingSlidingDrawer) ma.getParentLayout()
-				.findViewById(R.id.slidingDrawer);
-		if (vw != wsd) {
-			if (vw != null) {
-				ma.getParentLayout().removeView(vw);
-				vw = null;
+			ma.setCurrentEffect(this);
+			WrappingSlidingDrawer vw = (WrappingSlidingDrawer) ma
+					.getParentLayout().findViewById(R.id.slidingDrawer);
+			if (vw != wsd) {
+				if (vw != null) {
+					ma.getParentLayout().removeView(vw);
+					vw = null;
+				}
+				ma.getParentLayout().addView(wsd);
 			}
-			ma.getParentLayout().addView(wsd);
-		}
-		if (bmp1 == null) {
-			ma.update(null, 0);
+			if (bmp1 == null) {
+				ma.update(null, 0);
+			}
 		}
 	}
 

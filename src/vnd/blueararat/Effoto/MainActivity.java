@@ -352,16 +352,18 @@ public class MainActivity extends Activity implements OnTouchListener {
 			}
 			Effect.count = list.size();
 
+			ef = null;
+			index = 0;
+
 			if (i != 0) {
 				list.get(0).activate();
+				if (mActiveEffect.bmp1 != bmp1)
+					update(bmp1, index);
 			} else {
 				// setCurrentEffect(null);
 				mImageView.setImageBitmap(bmp1);
 			}
-			ef = null;
-			index = 0;
-			if (mActiveEffect.bmp1 != bmp1)
-				update(bmp1, index);
+
 			return true;
 		}
 		return false;
