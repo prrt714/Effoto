@@ -60,5 +60,15 @@
     <string name="waves">Волны</string>
     <string name="width">"Ширина "</string>
     <string name="only_border">Только вокруг</string>
+    <string name="backgrd">Фон</string>
+    <string name="blurrad">"Радиус     \nразмытия"</string>
+    <string name="brightness">"Яркость     "</string>
+    <string name="contrast">"Контраст    "</string>
+    <string name="density">"Плотность     "</string>
+    <string name="opacity">Непрозрачность</string>
+    <string name="radius">"Радиус        "</string>
+    <string name="randofpos">"Случайность\nположения"</string>
+    <string name="randofsz">"Случайность\nразмера"</string>
+    <string name="satur">Насыщенность</string>
 
 </resources>

@@ -19,7 +19,8 @@ import android.widget.TextView;
 
 public class CirclesEf extends Effect {
 
-	private float scale, radius, rnd_pos_max, rnd_size_max, blur_radius, satur;
+	private float scale, radius, rnd_pos_max, rnd_size_max, blur_radius, satur,
+			contrast, brightness;
 	private int opacity;
 
 	private SeekBar mSeekBarScale;
@@ -29,7 +30,9 @@ public class CirclesEf extends Effect {
 	private SeekBar mSeekBarRndSize;
 	private SeekBar mSeekBarBlur;
 	private SeekBar mSeekBarSatur;
-	
+	private SeekBar mSeekBarContrast;
+	private SeekBar mSeekBarBrightness;
+
 	private TextView mTextViewScaleVal;
 	private TextView mTextViewRadiusVal;
 	private TextView mTextViewOpacityVal;
@@ -37,6 +40,8 @@ public class CirclesEf extends Effect {
 	private TextView mTextViewRndSizeVal;
 	private TextView mTextViewBlurRadVal;
 	private TextView mTextViewSaturVal;
+	private TextView mTextViewContrastVal;
+	private TextView mTextViewBrightnessVal;
 	private Bitmap bmp2;
 	// private long i1;
 	// public int index;
@@ -46,11 +51,29 @@ public class CirclesEf extends Effect {
 	// private int mBitmapHeight, mBitmapWidth;
 
 	public CirclesEf(Context ctx) {
-		this(ctx, 0.05f, 10.0f, 255, 0, 0, 0, 0);
+		this(ctx, 0.01f + MTRNGJNILib.randDblExc(0.3f));
+		// this(ctx,
+		// MTRNGJNILib.randDblExc(0.3f),
+		// 2+MTRNGJNILib.randInt(10),
+		// 255,
+		// 0,
+		// 0,
+		// 0,
+		// MTRNGJNILib.randDblExc(2),
+		// MTRNGJNILib.randDblExc(1),
+		// 0);
+		// this(ctx, 0.05f, 10.0f, 255, 0, 0, 0, 1, 1, 0);
+	}
+
+	public CirclesEf(Context ctx, float lscale) {
+		this(ctx, lscale, 0.25f / lscale + MTRNGJNILib.rand(0.25f / lscale),
+				255, 0, 0, 0, MTRNGJNILib.randDblExc(1), 0.2f + MTRNGJNILib
+						.rand(0.8f), 0);
 	}
 
 	public CirclesEf(Context ctx, float lscale, float lradius, int lopacity,
-			float lrnd_pos_max, float lrnd_size_max, float lblur_radius, float lsatur) {
+			float lrnd_pos_max, float lrnd_size_max, float lblur_radius,
+			float lsatur, float lcontrast, float lbrightness) {
 		super(ctx);
 
 		// ib.setImageResource(R.drawable.bt_circles);
@@ -62,6 +85,8 @@ public class CirclesEf extends Effect {
 		this.rnd_size_max = lrnd_size_max;
 		this.blur_radius = lblur_radius;
 		this.satur = lsatur;
+		this.contrast = lcontrast;
+		this.brightness = lbrightness;
 		LayoutInflater inflater = LayoutInflater.from(ctx);
 		View v = inflater.inflate(R.layout.sliding_drawer_1,
 				ma.getParentLayout(), true);
@@ -95,9 +120,16 @@ public class CirclesEf extends Effect {
 		mTextViewBlurRadVal = (TextView) wsd.findViewById(R.id.blur_rad_val);
 		mTextViewBlurRadVal.setText(String.format("%.2f", blur_radius));
 		mTextViewSaturVal = (TextView) wsd.findViewById(R.id.satur_val);
-		mTextViewSaturVal.setText(String.format("%.2f", 1.f-satur*3));
+		mTextViewSaturVal.setText(String.format("%.2f", satur));
+		mTextViewContrastVal = (TextView) wsd.findViewById(R.id.contrast_val);
+		mTextViewContrastVal.setText(String.format("%.2f", contrast));
+		mTextViewBrightnessVal = (TextView) wsd
+				.findViewById(R.id.brightness_val);
+		mTextViewBrightnessVal.setText(String.format("%.2f",
+				(brightness + 255) / 255));
 
 		mSeekBarScale = (SeekBar) wsd.findViewById(R.id.scale);
+		mSeekBarScale.setProgress((int) (scale * 1000 - 1));
 		mSeekBarScale.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
@@ -128,6 +160,7 @@ public class CirclesEf extends Effect {
 		});
 
 		mSeekBarRadius = (SeekBar) wsd.findViewById(R.id.radius);
+		mSeekBarRadius.setProgress((int) (radius * 10 - 1));
 		mSeekBarRadius
 				.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
@@ -157,6 +190,7 @@ public class CirclesEf extends Effect {
 				});
 
 		mSeekBarOpacity = (SeekBar) wsd.findViewById(R.id.opacity);
+		mSeekBarOpacity.setProgress(opacity - 1);
 		mSeekBarOpacity
 				.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
@@ -183,6 +217,7 @@ public class CirclesEf extends Effect {
 				});
 
 		mSeekBarRndPos = (SeekBar) wsd.findViewById(R.id.rnd_pos);
+		mSeekBarRndPos.setProgress((int) (rnd_pos_max * 1000));
 		mSeekBarRndPos
 				.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
@@ -210,6 +245,7 @@ public class CirclesEf extends Effect {
 				});
 
 		mSeekBarRndSize = (SeekBar) wsd.findViewById(R.id.rnd_size);
+		mSeekBarRndSize.setProgress((int) (rnd_size_max * 1000));
 		mSeekBarRndSize
 				.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
@@ -237,6 +273,7 @@ public class CirclesEf extends Effect {
 				});
 
 		mSeekBarBlur = (SeekBar) wsd.findViewById(R.id.blur_rad);
+		mSeekBarBlur.setProgress((int) blur_radius);
 		mSeekBarBlur.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
@@ -261,8 +298,9 @@ public class CirclesEf extends Effect {
 				mTextViewBlurRadVal.setText(String.format("%.0f", blur_radius));
 			}
 		});
-		
+
 		mSeekBarSatur = (SeekBar) wsd.findViewById(R.id.satur);
+		mSeekBarSatur.setProgress((int) (satur * 100));
 		mSeekBarSatur.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
@@ -283,11 +321,68 @@ public class CirclesEf extends Effect {
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				if (fromUser)
-					satur = (50.f - progress)/150;
-				mTextViewSaturVal.setText(String.format("%.2f", 1.f-satur*3));
+					satur = (float) progress / 100;
+				mTextViewSaturVal.setText(String.format("%.2f", satur));
 			}
 		});
 
+		mSeekBarContrast = (SeekBar) wsd.findViewById(R.id.contrast);
+		mSeekBarContrast.setProgress((int) (contrast * 100));
+		mSeekBarContrast
+				.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar) {
+						isMoving = false;
+						// radius = (float) (seekBar.getProgress() + 1) / 10;
+						invalidate();
+						// draw(bmp2);
+						// mImageView.setImageBitmap(bmp3);
+					}
+
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar) {
+						isMoving = true;
+					}
+
+					@Override
+					public void onProgressChanged(SeekBar seekBar,
+							int progress, boolean fromUser) {
+						if (fromUser)
+							contrast = (float) progress / 100;
+						mTextViewContrastVal.setText(String.format("%.2f",
+								contrast));
+					}
+				});
+
+		mSeekBarBrightness = (SeekBar) wsd.findViewById(R.id.brightness);
+		mSeekBarBrightness.setProgress((int) (brightness + 255));
+		mSeekBarBrightness
+				.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar) {
+						isMoving = false;
+						// radius = (float) (seekBar.getProgress() + 1) / 10;
+						invalidate();
+						// draw(bmp2);
+						// mImageView.setImageBitmap(bmp3);
+					}
+
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar) {
+						isMoving = true;
+					}
+
+					@Override
+					public void onProgressChanged(SeekBar seekBar,
+							int progress, boolean fromUser) {
+						if (fromUser)
+							brightness = progress - 255;
+						mTextViewBrightnessVal.setText(String.format("%.2f",
+								(float) progress / 255));
+					}
+				});
 	}
 
 	class Draw extends AsyncTask<Bitmap, Void, Void> {
@@ -362,17 +457,32 @@ public class CirclesEf extends Effect {
 		// -0.3f,
 		// 0.0f, 255.0f, -0.3f, -0.3f, -0.3f, 0.0f, 255.0f, 0.0f, 0.0f,
 		// 0.0f, 1.0f, 0.0f };
-		float mx[] = { 1.f - 2 * satur, satur, satur, 0, 0,
-						satur, 1.f - 2 * satur, satur, 0, 0,
-						satur, satur, 1.f - 2 * satur, 0, 0,
-						0, 0, 0, 1.f, 0 };
-		ColorMatrix cm = new ColorMatrix(mx);
+		// float mxs[] = { 1.f - 2 * satur, satur, satur, 0, 0,
+		// satur, 1.f - 2 * satur, satur, 0, 0,
+		// satur, satur, 1.f - 2 * satur, 0, 0,
+		// 0, 0, 0, 1.f, 0 };
+		ColorMatrix cm = new ColorMatrix();
+		cm.setSaturation(satur);
+
+		// float sc = contrast;
+		float translate = (-0.5f * contrast + 0.5f) * 255.f;
+		cm.postConcat(new ColorMatrix(new float[] { contrast, 0, 0, 0,
+				translate, 0, contrast, 0, 0, translate, 0, 0, contrast, 0,
+				translate, 0, 0, 0, 1, 0 }));
+
+		// float mxb[] = { 1, 0, 0, 0, brightness,
+		// 0, 1, 0, 0, brightness,
+		// 0, 0, 1, 0, brightness,
+		// 0, 0, 0, 1, 0 };
+		cm.postConcat(new ColorMatrix(new float[] { 1, 0, 0, 0, brightness, 0,
+				1, 0, 0, brightness, 0, 0, 1, 0, brightness, 0, 0, 0, 1, 0 }));
+		// ColorMatrix cmb = new ColorMatrix(mxb);
 		// BlurMaskFilter Blur = new BlurMaskFilter(50,
 		// BlurMaskFilter.Blur.NORMAL);
 		// p.setMaskFilter(Blur);
 
 		p.setColorFilter(new ColorMatrixColorFilter(cm));
-		//p.setAlpha(50);
+		// p.setAlpha(50);
 
 		// if (isOnlyBorder) {
 		// Path path = new Path();
@@ -421,9 +531,9 @@ public class CirclesEf extends Effect {
 		// } else if ...
 		// }
 
-		float mx2[] = { 1.2f, 0f, 0f, 0.0f, 0f, 0f, 1.2f, 0f, 0f, 0f, 0f, 0f,
-				1.2f, 0.0f, 0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f };
-		ColorMatrix cm2 = new ColorMatrix(mx2);
+		// float mx2[] = { 1.2f, 0f, 0f, 0.0f, 0f, 0f, 1.2f, 0f, 0f, 0f, 0f, 0f,
+		// 1.2f, 0.0f, 0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f };
+		// ColorMatrix cm2 = new ColorMatrix(mx2);
 
 		// p.setColorFilter(new ColorMatrixColorFilter(cm2));
 
@@ -477,6 +587,10 @@ public class CirclesEf extends Effect {
 		if (!isLocked && bmp1 != null) {
 			int w = Math.round(bmp1.getWidth() * scale);
 			int h = Math.round(bmp1.getHeight() * scale);
+			if (w == 0)
+				w = 1;
+			if (h == 0)
+				h = 1;
 			bmp2 = Bitmap.createScaledBitmap(bmp1, w, h, true);
 			new Draw().execute(bmp2);
 		}

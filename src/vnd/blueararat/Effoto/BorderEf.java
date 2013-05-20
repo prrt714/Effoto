@@ -40,6 +40,10 @@ public class BorderEf extends Effect implements
 	public void setBackgroundColor(int backgroundColor) {
 		mBackgroundColor = backgroundColor;
 	}
+	
+	public int getBackgroundColor() {
+		return mBackgroundColor;
+	}
 
 	// private long i1;
 	// public int index;

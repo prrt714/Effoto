@@ -3,8 +3,11 @@
 
     <string name="app_name">Effoto</string>
     <!-- <string name="add_text">Text</string> -->
+    <string name="backgrd">Background</string>
     <string name="background">Background color</string>
     <string name="blur">Blur</string>
+    <string name="blurrad">Blur radius</string>
+    <string name="brightness">Brightness</string>
     <string name="cant_read_folder">folder can\'t be read!</string>
     <string name="cant_save_picture_to">Can\'t save picture to</string>
     <string name="cant_write_to_this_folder">can\'t write to this folder</string>
@@ -13,8 +16,10 @@
     <string name="circles">Circles</string>
     <string name="clip">Clip</string>
     <string name="color">Color</string>
+    <string name="contrast">"Contrast  "</string>
     <string name="create">Save</string>
     <string name="darkness">"Darkness "</string>
+    <string name="density">Density</string>
     <string name="dir_doesnt_exist">output folder doesn\'t exist yet</string>
     <string name="double_tap">Scale Saturation (2-tap)</string>
     <string name="edit_file_name">Edit file name</string>
@@ -32,7 +37,7 @@
     <string name="fit">Fit</string>
     <string name="folder">Folder</string>
     <string name="folder_select">Select folder</string>
-<!--      <string name="help">Adjust wave\'s width and height by 1-tap, wave\'s form by 2-tap, frame\'s width and height by 3-tap (when "Fit" is disabled)\n</string> -->
+    <!-- <string name="help">Adjust wave\'s width and height by 1-tap, wave\'s form by 2-tap, frame\'s width and height by 3-tap (when "Fit" is disabled)\n</string> -->
     <string name="jpeg_quality">JPEG Compression</string>
     <string name="media_scanner">Media Scanner</string>
     <string name="media_scanner_desc">Press to search for new pictures and add them to gallery</string>
@@ -45,13 +50,18 @@
     <string name="normal">Normal</string>
     <string name="nothing_to_delete">nothing to delete</string>
     <string name="nothing_to_open">nothing to open</string>
+    <string name="opacity">Opacity</string>
     <string name="open">Open</string>
     <!-- <string name="output_folder">Output</string> -->
     <string name="picture_saved_to">Picture saved to</string>
     <string name="pictures_will_be_saved">Pictures will be saved as</string>
     <string name="postmark">Postmark</string>
+    <string name="radius">"Radius "</string>
     <string name="rainbow">Rainbow</string>
+    <string name="randofpos">"Randomness\nof position"</string>
+    <string name="randofsz">"Randomness\n of size"</string>
     <string name="remove">Remove</string>
+    <string name="satur">Saturation</string>
     <string name="saturation">"Saturation "</string>
     <string name="save_format">Save Format</string>
     <string name="save">Save</string>

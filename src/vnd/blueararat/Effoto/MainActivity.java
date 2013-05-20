@@ -291,8 +291,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 		Effect ef = getCurrentEffect();
 		if (ef instanceof BorderEf) {
-			((BorderEf) ef).setBackgroundColor(prefs.getInt(Prefs.KEY_COLOR,
-					0xFFFFFFFF));
+			int color = prefs.getInt(Prefs.KEY_COLOR, 0xFFFFFFFF);
+			if (color != ((BorderEf) ef).getBackgroundColor()) {
+				((BorderEf) ef).setBackgroundColor(color);
+				ef.invalidate();
+			}
 		}
 		// long i1 = System.currentTimeMillis();
 		// float f;
@@ -361,6 +364,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 					update(bmp1, index);
 			} else {
 				// setCurrentEffect(null);
+				resultBitmap = bmp1;
 				mImageView.setImageBitmap(bmp1);
 			}
 
@@ -1433,7 +1437,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		CirclesEf.sOnlyBorderIndex = m - 1;
 		return i * 2.f;
 	}
-	
+
 	public Bitmap getResultBitmap() {
 		return resultBitmap;
 	}

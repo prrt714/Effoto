@@ -24,6 +24,13 @@
         android:orientation="vertical"
         android:padding="5dp" >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/circles"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="italic" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
@@ -32,7 +39,7 @@
                 android:id="@+id/scale_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Density"
+                android:text="@string/density"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <SeekBar
@@ -57,7 +64,7 @@
                 android:id="@+id/radius_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Radius "
+                android:text="@string/radius"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <SeekBar
@@ -82,7 +89,7 @@
                 android:id="@+id/opacity_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Opacity"
+                android:text="@string/opacity"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <SeekBar
@@ -107,7 +114,7 @@
                 android:id="@+id/rnd_pos_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Randomness\nof position"
+                android:text="@string/randofpos"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <SeekBar
@@ -132,7 +139,7 @@
                 android:id="@+id/rnd_size_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Randomness\n of size"
+                android:text="@string/randofsz"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <SeekBar
@@ -157,7 +164,7 @@
                 android:id="@+id/blur_rad_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Blur radius"
+                android:text="@string/blurrad"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <SeekBar
@@ -174,16 +181,12 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Background"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/backgrd"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="italic" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -193,7 +196,7 @@
                 android:id="@+id/satur_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Saturation"
+                android:text="@string/satur"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <SeekBar
@@ -201,11 +204,61 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:max="100"
-                android:progress="50" />
+                android:max="200"
+                android:progress="100" />
 
             <TextView
                 android:id="@+id/satur_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/contrast_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contrast"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <SeekBar
+                android:id="@+id/contrast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="200"
+                android:progress="100" />
+
+            <TextView
+                android:id="@+id/contrast_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/brightness_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brightness"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <SeekBar
+                android:id="@+id/brightness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="510"
+                android:progress="255" />
+
+            <TextView
+                android:id="@+id/brightness_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
