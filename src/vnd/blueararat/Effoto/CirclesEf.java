@@ -67,8 +67,8 @@ public class CirclesEf extends Effect {
 
 	public CirclesEf(Context ctx, float lscale) {
 		this(ctx, lscale, 0.25f / lscale + MTRNGJNILib.rand(0.25f / lscale),
-				255, 0, 0, 0, MTRNGJNILib.randDblExc(1), 0.2f + MTRNGJNILib
-						.rand(0.8f), 0);
+				255, 0, 0, 0, 0.4f + MTRNGJNILib.rand(0.8f),
+				0.4f + MTRNGJNILib.rand(0.8f), 0);
 	}
 
 	public CirclesEf(Context ctx, float lscale, float lradius, int lopacity,

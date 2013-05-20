@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="vnd.blueararat.Effoto"
-    android:versionCode="1"
-    android:versionName="1.0" android:installLocation="preferExternal">
+    android:installLocation="preferExternal"
+    android:versionCode="2"
+    android:versionName="1.0.1" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -15,13 +16,16 @@
     -->
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.touchscreen.multitouch" />
+
     <!-- <uses-permission android:name="permission1" /> -->
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name="vnd.blueararat.Effoto.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
