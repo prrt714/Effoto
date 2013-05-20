@@ -246,7 +246,7 @@ public class BorderEf extends Effect implements
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			Effect.isLocked = true;
+			isLocked = true;
 			bmp3 = drawIntoBitmap();
 			return null;
 			// return export();
@@ -402,6 +402,9 @@ public class BorderEf extends Effect implements
 				// System.gc();
 				return null;
 			}
+//			catch (NullPointerException e) {
+//				return ma.getResultBitmap();
+//			}
 			Canvas canvas = new Canvas(bitmap2);
 			if (!MainActivity.isPNG)
 				canvas.drawColor(lBackgroundColor);
@@ -489,13 +492,13 @@ public class BorderEf extends Effect implements
 				ma.updateMoving(bmp3);
 				// bmp3 = null;
 				// System.gc();
-				Effect.isLocked = false;
+				isLocked = false;
 
 				// ma.update(bmp3, ma.index + 1);
 				// mImageView.setImageBitmap(bmp3);
 			} else {
-				Effect.isLocked = false;
-				ma.update(bmp3, ma.index + 1);
+				isLocked = false;
+				ma.update(bmp3, index);
 				freeMemory();
 			}
 			// Toast.makeText(ma, result, Toast.LENGTH_SHORT).show();
@@ -537,7 +540,7 @@ public class BorderEf extends Effect implements
 
 	@Override
 	public void invalidate() {
-		if (!Effect.isLocked && bmp1 != null)
+		if (!isLocked && bmp1 != null)
 			new Draw().execute();
 	}
 
@@ -578,7 +581,7 @@ public class BorderEf extends Effect implements
 				isMoving = false;
 				if (CirclesEf.sOnlyBorderIndex > -1) {
 					sBorderWidth = ma.getMaxWaveHeight();
-					Effect.isLocked = false;
+					isLocked = false;
 					ma.update(null, 0);
 				} else {
 					invalidate();
@@ -589,7 +592,7 @@ public class BorderEf extends Effect implements
 				// return true;
 				// }
 				// invalidate();
-				// if (!Effect.isLocked)
+				// if (!isLocked)
 				// ma.update(bmp3, ma.index + 1);
 			}
 			if (action == MotionEvent.ACTION_POINTER_DOWN) {

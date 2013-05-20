@@ -261,7 +261,7 @@ public class CirclesEf extends Effect {
 
 		@Override
 		protected Void doInBackground(Bitmap... params) {
-			Effect.isLocked = true;
+			isLocked = true;
 			draw(params[0]);
 			return null;
 		}
@@ -274,7 +274,7 @@ public class CirclesEf extends Effect {
 				return;
 			}
 
-			Effect.isLocked = false;
+			isLocked = false;
 			if (isMoving) {
 				ma.updateMoving(bmp3);
 				bmp3 = null;
@@ -436,7 +436,7 @@ public class CirclesEf extends Effect {
 
 	@Override
 	public void invalidate() {
-		if (!Effect.isLocked && bmp1 != null) {
+		if (!isLocked && bmp1 != null) {
 			int w = Math.round(bmp1.getWidth() * scale);
 			int h = Math.round(bmp1.getHeight() * scale);
 			bmp2 = Bitmap.createScaledBitmap(bmp1, w, h, true);

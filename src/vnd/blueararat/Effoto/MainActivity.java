@@ -1433,4 +1433,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 		CirclesEf.sOnlyBorderIndex = m - 1;
 		return i * 2.f;
 	}
+	
+	public Bitmap getResultBitmap() {
+		return resultBitmap;
+	}
 }
