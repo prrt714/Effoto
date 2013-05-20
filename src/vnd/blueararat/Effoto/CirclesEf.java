@@ -51,7 +51,7 @@ public class CirclesEf extends Effect {
 	// private int mBitmapHeight, mBitmapWidth;
 
 	public CirclesEf(Context ctx) {
-		this(ctx, 0.01f + MTRNGJNILib.randDblExc(0.3f));
+		this(ctx, 0.01f + MTRNGJNILib.randDblExc(0.1f));
 		// this(ctx,
 		// MTRNGJNILib.randDblExc(0.3f),
 		// 2+MTRNGJNILib.randInt(10),
@@ -67,8 +67,8 @@ public class CirclesEf extends Effect {
 
 	public CirclesEf(Context ctx, float lscale) {
 		this(ctx, lscale, 0.25f / lscale + MTRNGJNILib.rand(0.25f / lscale),
-				255, 0, 0, 0, 0.4f + MTRNGJNILib.rand(0.8f),
-				0.4f + MTRNGJNILib.rand(0.8f), 0);
+				255, 0, 0, 0, 0.6f + MTRNGJNILib.rand(0.8f),
+				0.6f + MTRNGJNILib.rand(0.8f), 0);
 	}
 
 	public CirclesEf(Context ctx, float lscale, float lradius, int lopacity,
