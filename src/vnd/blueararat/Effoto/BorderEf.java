@@ -13,10 +13,8 @@ import android.graphics.EmbossMaskFilter;
 import android.graphics.MaskFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathMeasure;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.SweepGradient;
@@ -28,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 public class BorderEf extends Effect implements
 		WaveSettingsLayout.OnSettingsChangedListener {
@@ -40,7 +37,7 @@ public class BorderEf extends Effect implements
 	public void setBackgroundColor(int backgroundColor) {
 		mBackgroundColor = backgroundColor;
 	}
-	
+
 	public int getBackgroundColor() {
 		return mBackgroundColor;
 	}
@@ -251,6 +248,7 @@ public class BorderEf extends Effect implements
 		@Override
 		protected Void doInBackground(Void... params) {
 			isLocked = true;
+			iAmLocked = true;
 			bmp3 = drawIntoBitmap();
 			return null;
 			// return export();
@@ -406,9 +404,10 @@ public class BorderEf extends Effect implements
 				// System.gc();
 				return null;
 			}
-//			catch (NullPointerException e) {
-//				return ma.getResultBitmap();
-//			}
+			// catch (NullPointerException e) {
+			// // Log.e("qwe123", "" + index);
+			// return ma.getResultBitmap();
+			// }
 			Canvas canvas = new Canvas(bitmap2);
 			if (!MainActivity.isPNG)
 				canvas.drawColor(lBackgroundColor);
@@ -497,13 +496,15 @@ public class BorderEf extends Effect implements
 				// bmp3 = null;
 				// System.gc();
 				isLocked = false;
-
+				iAmLocked = false;
 				// ma.update(bmp3, ma.index + 1);
 				// mImageView.setImageBitmap(bmp3);
 			} else {
 				isLocked = false;
+				iAmLocked = false;
 				ma.update(bmp3, index);
-				freeMemory();
+				if (!iAmLocked)
+					freeMemory();
 			}
 			// Toast.makeText(ma, result, Toast.LENGTH_SHORT).show();
 		}
@@ -520,9 +521,10 @@ public class BorderEf extends Effect implements
 	@Override
 	public void setBitmap(Bitmap bmp1) {
 		super.setBitmap(bmp1);
-		mCenterRainbowX = mBitmapWidth / 2;
-		mCenterRainbowY = mBitmapHeight / 2;
-
+		if (!iAmLocked) {
+			mCenterRainbowX = mBitmapWidth / 2;
+			mCenterRainbowY = mBitmapHeight / 2;
+		}
 	}
 
 	@Override
@@ -585,7 +587,7 @@ public class BorderEf extends Effect implements
 				isMoving = false;
 				if (CirclesEf.sOnlyBorderIndex > -1) {
 					sBorderWidth = ma.getMaxWaveHeight();
-					isLocked = false;
+					//isLocked = false;
 					ma.update(null, 0);
 				} else {
 					invalidate();

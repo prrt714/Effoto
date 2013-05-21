@@ -26,6 +26,8 @@ public abstract class Effect {
 	protected int mBitmapWidth, mBitmapHeight;
 
 	protected static volatile boolean isLocked = false;
+	protected volatile boolean iAmLocked = false;
+
 	protected static float sBorderWidth;
 	protected int index;
 
@@ -143,9 +145,11 @@ public abstract class Effect {
 	}
 
 	protected void setBitmap(Bitmap bmp1) {
-		this.bmp1 = bmp1;
-		mBitmapHeight = bmp1.getHeight();
-		mBitmapWidth = bmp1.getWidth();
+		if (!iAmLocked) {
+			this.bmp1 = bmp1;
+			mBitmapHeight = bmp1.getHeight();
+			mBitmapWidth = bmp1.getWidth();
+		}
 	}
 
 	protected Bitmap getBitmap() {

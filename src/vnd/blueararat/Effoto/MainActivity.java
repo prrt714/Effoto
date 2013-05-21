@@ -1326,6 +1326,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 					/ Effect.opts.inSampleSize;
 			// Toast.makeText(this, "" + scale, 0).show();
 			BorderEf.scaleStrokeWidth(scale);
+			Effect.sBorderWidth *= scale;
 		}
 		for (Effect l : list)
 			l.rescale(scale);

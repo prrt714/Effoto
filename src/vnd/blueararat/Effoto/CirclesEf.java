@@ -67,8 +67,8 @@ public class CirclesEf extends Effect {
 
 	public CirclesEf(Context ctx, float lscale) {
 		this(ctx, lscale, 0.25f / lscale + MTRNGJNILib.rand(0.25f / lscale),
-				255, 0, 0, 0, 0.6f + MTRNGJNILib.rand(0.8f),
-				0.6f + MTRNGJNILib.rand(0.8f), 0);
+				255, 0, 0, 0, 0.6f + MTRNGJNILib.rand(0.8f), 0.6f + MTRNGJNILib
+						.rand(0.8f), 0);
 	}
 
 	public CirclesEf(Context ctx, float lscale, float lradius, int lopacity,
@@ -390,6 +390,7 @@ public class CirclesEf extends Effect {
 		@Override
 		protected Void doInBackground(Bitmap... params) {
 			isLocked = true;
+			iAmLocked = true;
 			draw(params[0]);
 			return null;
 		}
@@ -403,13 +404,16 @@ public class CirclesEf extends Effect {
 			}
 
 			isLocked = false;
+			iAmLocked = false;
 			if (isMoving) {
 				ma.updateMoving(bmp3);
-				bmp3 = null;
+				if (!iAmLocked)
+					bmp3 = null;
 				System.gc();
 			} else {
-				ma.update(bmp3, ma.index + 1);
-				freeMemory();
+				ma.update(bmp3, index);
+				if (!iAmLocked)
+					freeMemory();
 			}
 		}
 	}
