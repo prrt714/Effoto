@@ -1,6 +1,7 @@
 <resources>
 
     <!-- <string name="add_text">Текст</string> -->
+    <string name="are_you_sure_quit">Выйти?</string>
     <string name="background">Цвет фона</string>
     <string name="blur">Размытие</string>
     <string name="cant_read_folder">папку нельзя читать!</string>

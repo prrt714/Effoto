@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Effoto</string>
+    <string name="are_you_sure_quit">Quit?</string>
     <!-- <string name="add_text">Text</string> -->
     <string name="backgrd">Background</string>
     <string name="background">Background color</string>

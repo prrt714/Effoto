@@ -113,6 +113,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	protected void onDestroy() {
 		Effect.sBorderWidth = 0;
 		Effect.opts = null;
+		Effect.isLocked = false;
 		Effect.count = 0;
 		CirclesEf.sOnlyBorderIndex = -1;
 		File cachedir = getCacheDir();
@@ -278,7 +279,21 @@ public class MainActivity extends Activity implements OnTouchListener {
 				&& mActiveEffect.getSlidingDrawer().isOpened()) {
 			mActiveEffect.getSlidingDrawer().animateClose();
 		} else {
-			super.onBackPressed();
+			new AlertDialog.Builder(this)
+					// .setIcon(android.R.drawable.ic_dialog_alert)
+					// .setTitle("")
+					.setMessage(R.string.are_you_sure_quit)
+					.setPositiveButton(android.R.string.yes,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									finish();
+								}
+
+							}).setNegativeButton(android.R.string.no, null)
+					.show();
 		}
 	};
 
