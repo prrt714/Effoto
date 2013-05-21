@@ -429,6 +429,7 @@ public class CirclesEf extends Effect {
 				opts.inSampleSize = 2;
 			else
 				opts.inSampleSize++;
+			iAmLocked = false;
 			return;
 		}
 		Canvas c = new Canvas(bmp3);

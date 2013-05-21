@@ -402,6 +402,7 @@ public class BorderEf extends Effect implements
 				// bitmap = null;
 				// bitmap2 = null;
 				// System.gc();
+				iAmLocked = false;
 				return null;
 			}
 			// catch (NullPointerException e) {

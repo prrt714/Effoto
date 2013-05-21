@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="vnd.blueararat.Effoto"
     android:installLocation="preferExternal"
-    android:versionCode="3"
-    android:versionName="1.0.1b" >
+    android:versionCode="4"
+    android:versionName="1.0.1c" >
 
     <uses-sdk
         android:minSdkVersion="10"
