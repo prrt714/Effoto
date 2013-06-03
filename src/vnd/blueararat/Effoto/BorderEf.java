@@ -66,6 +66,7 @@ public class BorderEf extends Effect implements
 	private boolean isNone = false;
 	private float mCenterRainbowX;
 	private float mCenterRainbowY;
+	private float[] rainbow;
 	// public static final int HATCH_COLOR_BG = 0xFF222222;
 	// public static final int HATCH_COLOR_LINES = 0xFF888888;
 	static final int SELECT_FOLDER = 1;
@@ -206,6 +207,9 @@ public class BorderEf extends Effect implements
 
 		MainActivity.setViewGroupFont(wsd, Typeface.MONOSPACE);
 		sd.update(mStrokeWidth);
+		if (serialized != null) {
+			sd.update(rainbow, mMode1, mMode2);
+		}
 	}
 
 	private class Draw extends AsyncTask<Void, Void, Void> {
@@ -531,14 +535,14 @@ public class BorderEf extends Effect implements
 		// }
 	}
 
-	@Override
-	public void setBitmap(Bitmap bmp1) {
-		super.setBitmap(bmp1);
-		if (!iAmLocked) {
-			mCenterRainbowX = mBitmapWidth / 2;
-			mCenterRainbowY = mBitmapHeight / 2;
-		}
-	}
+//	@Override
+//	public void setBitmap(Bitmap bmp1) {
+//		super.setBitmap(bmp1);
+//		if (!iAmLocked) {
+//			mCenterRainbowX = mBitmapWidth / 2;
+//			mCenterRainbowY = mBitmapHeight / 2;
+//		}
+//	}
 
 	@Override
 	public void rescale(float scale) {
@@ -847,6 +851,10 @@ public class BorderEf extends Effect implements
 			isNone = false;
 			break;
 		case WaveSettingsLayout.RAINBOW:
+			if (this.rainbow == null) {
+				mCenterRainbowX = mBitmapWidth / 2;
+				mCenterRainbowY = mBitmapHeight / 2;
+			}
 			sd.setRainbow(true);
 			// mRainbowFrame.setVisibility(View.VISIBLE);
 			mPaint.setXfermode(null);
@@ -884,6 +892,7 @@ public class BorderEf extends Effect implements
 			break;
 		}
 		if (rainbow != null) {
+			this.rainbow = rainbow;
 			mCenterRainbowX = (bmp1.getWidth() / 2.f)
 					* (1.f - rainbow[0] / sd.getRainbowScale());
 			mCenterRainbowY = (bmp1.getHeight() / 2.f)
@@ -995,6 +1004,9 @@ public class BorderEf extends Effect implements
 		private float lmDy;
 		private boolean lisBlur;
 		private boolean lisRainbow;
+		private float lmCenterRainbowX, lmCenterRainbowY;
+		private float[] lrainbow;
+		private int[] lmColors;
 
 		private boolean lmustFit;
 		private boolean lmustClip;
@@ -1011,6 +1023,10 @@ public class BorderEf extends Effect implements
 			lmDy = ef.mDy;
 			lisBlur = ef.isBlur;
 			lisRainbow = ef.isRainbow;
+			lrainbow = ef.rainbow;
+			lmCenterRainbowX = ef.mCenterRainbowX;
+			lmCenterRainbowY = ef.mCenterRainbowY;
+			lmColors = ef.mColors;
 
 			lmustFit = ef.mustFit;
 			lmustClip = ef.mustClip;
@@ -1066,6 +1082,11 @@ public class BorderEf extends Effect implements
 		mColor = se.lmColor;
 		mBackgroundColor = se.lmBackgroundColor;
 		isRainbow = se.lisRainbow;
+		rainbow = se.lrainbow;
+		mCenterRainbowX = se.lmCenterRainbowX;
+		mCenterRainbowY = se.lmCenterRainbowY;
+
+		mColors = se.lmColors;
 		isCircle = se.lisCircle;
 		mustFit = se.lmustFit;
 		mustClip = se.lmustClip;

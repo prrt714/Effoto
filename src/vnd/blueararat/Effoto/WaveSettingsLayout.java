@@ -16,7 +16,8 @@ import android.widget.TextView.OnEditorActionListener;
 public class WaveSettingsLayout extends RelativeLayout {
 
 	public interface OnSettingsChangedListener {
-		void settingsChanged(int color, int mode1, int mode2, float strokewidth, float rainbow[]);
+		void settingsChanged(int color, int mode1, int mode2,
+				float strokewidth, float rainbow[]);
 	}
 
 	private OnSettingsChangedListener mListener;
@@ -35,6 +36,7 @@ public class WaveSettingsLayout extends RelativeLayout {
 	int mMode2 = COLOR;
 	float mStrokeWidth = 4;
 	private SeekBar sb;
+	private RadioGroup rd1, rd2;
 
 	public WaveSettingsLayout(Context context) {
 		this(context, null, 0);
@@ -58,8 +60,8 @@ public class WaveSettingsLayout extends RelativeLayout {
 		// // +++++++++++++++++++++++++
 
 	}
-	
-	public void setRainbow(boolean isRainbow){
+
+	public void setRainbow(boolean isRainbow) {
 		cpv.setRainbow(isRainbow);
 	}
 
@@ -105,9 +107,9 @@ public class WaveSettingsLayout extends RelativeLayout {
 
 		// ---------------------
 
-		final RadioGroup rd1 = (RadioGroup) findViewById(R.id.radiogroup1);
+		rd1 = (RadioGroup) findViewById(R.id.radiogroup1);
 		rd1.check(rd1.getChildAt(mMode1).getId());
-		final RadioGroup rd2 = (RadioGroup) findViewById(R.id.radiogroup2);
+		rd2 = (RadioGroup) findViewById(R.id.radiogroup2);
 		rd2.check(rd2.getChildAt(mMode2).getId());
 		final EditText et = (EditText) findViewById(R.id.strokewidth);
 		et.setText(String.format("%.1f", mStrokeWidth));
@@ -177,7 +179,7 @@ public class WaveSettingsLayout extends RelativeLayout {
 			}
 		});
 	}
-	
+
 	public float getRainbowScale() {
 		return cpv.getRainbowScale();
 	}
@@ -185,5 +187,15 @@ public class WaveSettingsLayout extends RelativeLayout {
 	public void update(float strokewidth) {
 		mStrokeWidth = strokewidth;
 		sb.setProgress((int) strokewidth);
+	}
+
+	public void update(float[] rainbow, int mode1, int mode2) {
+		mMode1 = mode1;
+		mMode2 = mode2;
+		rd1.check(rd1.getChildAt(mMode1).getId());
+		rd2.check(rd2.getChildAt(mMode2).getId());
+		if (rainbow != null) {
+			cpv.setRainbowPosition(rainbow);
+		}
 	}
 }

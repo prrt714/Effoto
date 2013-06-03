@@ -186,10 +186,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 					mImageView.setImageBitmap(bmp1);
 					// resultBitmap = bmp1;
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else {
@@ -679,7 +677,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// // uri.toString());
 		// // mShareActionProvider.setShareIntent(mShareIntent);
 		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
 		// e.printStackTrace();
 		// }
 		// // invalidateOptionsMenu();
@@ -1334,22 +1331,17 @@ public class MainActivity extends Activity implements OnTouchListener {
 				try {
 					ef = (Effect) (constructor.newInstance(mContext, sr));
 				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				list.add(ef);
 
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -1364,7 +1356,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// update(resultBitmap, index);
 
 		// update(null, 0);
-		mLoadFrame.setVisibility(View.GONE);
+		// mLoadFrame.setVisibility(View.GONE);
 
 		// File fl = new File(getCacheDir(), mFileName + mExt);
 		// String fn = mFileName + "-"
@@ -1386,9 +1378,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// // startActivity(mShareIntent);
 		// // startActivity(il[position]);
 
-	}
-
-	void rename(File folder) {
 	}
 
 	public void addEffectOnClick(View v) {
@@ -1458,13 +1447,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (InstantiationException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (IllegalAccessException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (InvocationTargetException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							list.add(ef);
@@ -1603,7 +1589,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// file.getAbsolutePath());
 		// str = copyExif(newexif) + str;
 		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
 		// }
 		// exif = null;
 		// }
@@ -1814,10 +1799,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 					}
 					OnSizeChanged(mViewRect);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (OutOfMemoryError e) {
 					if (Effect.opts.inSampleSize < 2)

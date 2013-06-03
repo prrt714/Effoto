@@ -447,6 +447,10 @@ public class ColorPickerView extends View {
 
 		invalidate();
 	}
+	
+	public void setRainbowPosition(float rainbow[]) {
+		this.rainbow = rainbow;
+	}
 
 	public int getColor() {
 		return mCenterPaint.getColor();
