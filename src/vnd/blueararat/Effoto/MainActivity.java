@@ -43,6 +43,7 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.ShareCompat;
 import android.util.FloatMath;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,7 +102,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private static final int ZOOM = 2;
 	private static final int OPEN_PICTURE = 1;
 	private int mode = NONE;
-	
+
 	private static final String icon = "icon.png";
 
 	private PointF start = new PointF();
@@ -960,7 +961,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 				String item = getItem(position);
 				text.setText(item);
-				Bitmap bmp = BitmapFactory.decodeFile((new File(new File(getCacheDir(),item),icon)).getAbsolutePath());
+				Bitmap bmp = BitmapFactory.decodeFile((new File(new File(
+						getCacheDir(), item), icon)).getAbsolutePath());
 				image.setImageBitmap(bmp);
 
 				return view;
@@ -1025,10 +1027,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 								View view, int position, long id) {
 							final CharSequence[] items = {
 									mContext.getString(R.string.remove),
-									mContext.getString(R.string.load) };
+									mContext.getString(R.string.load),
+									mContext.getString(R.string.rename) };
 							// TextView text = (TextView) view
 							// .findViewById(R.id.title);
-							String item = (String) parent
+							final String item = (String) parent
 									.getItemAtPosition(position);
 							final File f = new File(getCacheDir(), item);
 
@@ -1053,6 +1056,41 @@ public class MainActivity extends Activity implements OnTouchListener {
 														break;
 													case 1:
 														load(f);
+														break;
+													case 2:
+														final EditText input = new EditText(
+																mContext);
+														input.setText(item);
+														new AlertDialog.Builder(
+																mContext)
+																.setTitle(
+																		R.string.input_new_name)
+																.setView(input)
+																.setPositiveButton(
+																		android.R.string.yes,
+																		new DialogInterface.OnClickListener() {
+																			public void onClick(
+																					DialogInterface dialog,
+																					int whichButton) {
+																				String effname = input
+																						.getText()
+																						.toString();
+																				if (effname
+																						.length() == 0)
+																					return;
+																				File newfile = new File(
+																						f.getParent(),
+																						effname);
+																				f.renameTo(newfile);
+																				setLoadFrame();
+																				mLoadFrame.setVisibility(View.VISIBLE);
+																			}
+																		})
+																.setNegativeButton(
+																		android.R.string.no,
+																		null)
+																.show();
+
 														break;
 													}
 												}
@@ -1161,6 +1199,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 										return;
 									saveEffect(effname);
 									setLoadFrame();
+									mLoadFrame.setVisibility(View.VISIBLE);
 								}
 							}).setNegativeButton(android.R.string.no, null)
 					.show();
@@ -1207,23 +1246,23 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private void exportIcon(File imageFile) {
 		Bitmap bmp = Bitmap.createBitmap(72, 72, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bmp);
-		int m = 0;
-		int n = 0;
+		int m, n;
 		Paint p = new Paint();
-		p.setDither(true);
-		p.setAntiAlias(true);
+		// p.setDither(true);
+		// p.setAntiAlias(true);
 
 		Rect src = new Rect(0, 0, 72, 72);
-		int cc = getButtonLayout().getChildCount();
-		if (cc > 10)
-			cc = 10;
-		for (int k = 1; k < cc; k++) {
-			m = ((k-1) / 3)*24;
-			n = ((k-1) % 3)*24;
-			Rect dst = new Rect(m, n, 48 - m, 48 - n);
-			ImageButton ib = (ImageButton) getButtonLayout().getChildAt(k);
-			Bitmap bm = ((BitmapDrawable) ib.getDrawable()).getBitmap();
-			canvas.drawBitmap(bm, src, dst, p);
+		int c = list.size();// getButtonLayout().getChildCount();
+		int count = 1 + (int) Math.sqrt(c);
+		int side = 72 / count;
+		for (int k = 0; k < c; k++) {
+			m = (k / count) * side;
+			n = (k % count) * side;
+			p.setColor(list.get(k).getColor());
+			Rect dst = new Rect(m, n, m + side, n + side);
+			// ImageButton ib = (ImageButton) getButtonLayout().getChildAt(k);
+			// Bitmap bm = ((BitmapDrawable) ib.getDrawable()).getBitmap();
+			canvas.drawRect(dst, p);
 		}
 
 		Bitmap.CompressFormat mCf = Bitmap.CompressFormat.PNG;
@@ -1342,6 +1381,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// // startActivity(mShareIntent);
 		// // startActivity(il[position]);
 
+	}
+
+	void rename(File folder) {
 	}
 
 	public void addEffectOnClick(View v) {

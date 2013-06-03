@@ -174,6 +174,8 @@ public abstract class Effect {
 	protected Bitmap getBitmap() {
 		return bmp3;
 	}
+	
+	protected abstract int getColor();
 
 	protected abstract void invalidate();
 

@@ -896,7 +896,8 @@ public class BorderEf extends Effect implements
 		invalidate();
 	}
 
-	public int getColor() {
+	@Override
+	protected int getColor() {
 		return mColor;
 	}
 

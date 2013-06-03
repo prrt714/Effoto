@@ -12,6 +12,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
@@ -736,5 +737,10 @@ public class CirclesEf extends Effect {
 		sBorderWidth = se.lsBorderWidth;
 		sOnlyBorderIndex = se.lsOnlyBorderIndex;
 		return true;
+	}
+
+	@Override
+	protected int getColor() {
+		return Color.WHITE;
 	}
 }
