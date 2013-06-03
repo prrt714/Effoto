@@ -2,9 +2,9 @@
 
     <item
         android:id="@+id/menu_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:icon="@android:drawable/ic_menu_preferences"
         android:title="@string/menu_settings"/>
     <item
         android:id="@+id/open"
@@ -15,7 +15,17 @@
         android:id="@+id/menu_item_share"
         android:icon="@android:drawable/ic_menu_share"
         android:showAsAction="ifRoom"
-        android:title="Share"/>
+        android:title="@string/share"/>
+    <item
+        android:id="@+id/menu_save_eff"
+        android:icon="@android:drawable/ic_menu_save"
+        android:showAsAction="ifRoom"
+        android:title="@string/save_effect"/>
+    <item
+        android:id="@+id/menu_load_eff"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:showAsAction="ifRoom"
+        android:title="@string/load_effect"/>
     <item
         android:id="@+id/fit"
         android:checkable="true"

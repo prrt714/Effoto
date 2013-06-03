@@ -1,5 +1,7 @@
 package vnd.blueararat.Effoto;
 
+import java.io.File;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -100,7 +102,8 @@ public abstract class Effect {
 				/*
 				 * Toast.makeText(mContext, "67 "+v, 0).show();
 				 * ma.getButtonLayout().removeView(ib);
-				 */final CharSequence[] items = { "Remove" };
+				 */final CharSequence[] items = { mContext
+						.getString(R.string.remove) };
 				new AlertDialog.Builder(mContext)// .setTitle(R.string.pick_color);
 						.setItems(items, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
@@ -132,6 +135,18 @@ public abstract class Effect {
 		}
 	}
 
+	public Effect(Context ctx, File serialized) {
+	}
+
+	protected void destroy() {
+		ma.getButtonLayout().removeView(ib);
+		if (active) {
+			ma.getParentLayout().removeView(wsd);
+			active = false;
+		}
+		freeMemory();
+	}
+
 	//
 	// @Override
 	// protected String toString() {
@@ -143,6 +158,10 @@ public abstract class Effect {
 	protected void setActive(boolean active) {
 		this.active = active;
 	}
+
+	protected abstract void save(File folder);
+
+	protected abstract boolean load(File serialized);
 
 	protected void setBitmap(Bitmap bmp1) {
 		if (!iAmLocked) {

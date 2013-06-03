@@ -1,6 +1,12 @@
 package vnd.blueararat.Effoto;
 
-import java.io.FilenameFilter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -22,6 +28,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.FloatMath;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,13 +52,13 @@ public class BorderEf extends Effect implements
 	// private long i1;
 	// public int index;
 
-	private Paint mPaint, mPaint5, mBitmapPaint;// , mTextPaint;
+	private Paint mPaint, mBitmapPaint;// , mTextPaint;
 	private MaskFilter mEmboss;
 	private MaskFilter mBlur;
 	private int mColor;
 	private static int sColor = 0xFF7777FF;
 	private static float sStrokeWidth = 4;
-	private int mBckgrWidth = 100, mBckgrHeight = 100;
+	// private int mBckgrWidth = 100, mBckgrHeight = 100;
 	private float mStrokeWidth;
 	private boolean isRainbow = false;
 	// private static FrameLayout mRainbowFrame;
@@ -60,8 +67,8 @@ public class BorderEf extends Effect implements
 	private boolean isNone = false;
 	private float mCenterRainbowX;
 	private float mCenterRainbowY;
-	public static final int HATCH_COLOR_BG = 0xFF222222;
-	public static final int HATCH_COLOR_LINES = 0xFF888888;
+	// public static final int HATCH_COLOR_BG = 0xFF222222;
+	// public static final int HATCH_COLOR_LINES = 0xFF888888;
 	static final int SELECT_FOLDER = 1;
 	private int mMode1;
 	private int mMode2;
@@ -73,7 +80,7 @@ public class BorderEf extends Effect implements
 	int[] mColors = new int[] { 0xFFFF0000, 0xFFFF00FF, 0xFF0000FF, 0xFF00FFFF,
 			0xFF00FF00, 0xFFFFFF00, 0xFFFF0000 };
 	// private static TextView sInfo;
-	private FilenameFilter mFilenameFilter;
+	// private FilenameFilter mFilenameFilter;
 	// private static volatile boolean mustStop = false;
 	private boolean mustFit = true;
 	private boolean mustClip = false;
@@ -82,10 +89,10 @@ public class BorderEf extends Effect implements
 	private boolean isCircle = false;
 	// private int mNumWaves = 10;
 	// private static boolean shouldDrawText = false;
-	private float[] dt = new float[] { 0, 0 };
+	// private float[] dt = new float[] { 0, 0 };
 	// private boolean adjustTextPosition = false;
-	private float pathLength = 0;
-	private float currentLength = 0;
+	// private float pathLength = 0;
+	// private float currentLength = 0;
 	// private static String sText = "";
 	// private static boolean fillWithText = false;
 	// private static Typeface font;
@@ -94,39 +101,48 @@ public class BorderEf extends Effect implements
 	private Drawable d1, d2;
 
 	public BorderEf(Context ctx) {
-		this(ctx, Color.WHITE, 0, 0, sStrokeWidth);
+		this(ctx, Color.WHITE, 0, 0, sStrokeWidth, null);
+	}
+
+	public BorderEf(Context ctx, File serialized) {
+		this(ctx, 0, 0, 0, 0, serialized);
+		ib.setImageDrawable(d1);
 	}
 
 	public BorderEf(Context ctx, int color, int mode1, int mode2,
-			float strokewidth) {
+			float strokewidth, File serialized) {
 		super(ctx);
-		mStrokeWidth = strokewidth;
+		if (serialized == null || !load(serialized)) {
+			this.mMode1 = mode1;
+			this.mMode2 = mode2;
+			this.mStrokeWidth = strokewidth;
 
-		// if (sBackgroundColor == -1) {
-		mBackgroundColor = ma.prefs.getInt(Prefs.KEY_COLOR, 0xFFFFFFFF);
-		// mTextPaint.setColor(mBackgroundColor);
-		// if (font != null)
-		// mTextPaint.setTypeface(font);
-		// mv.updateTextBounds();
-		// }
+			// if (sBackgroundColor == -1) {
+			mBackgroundColor = ma.prefs.getInt(Prefs.KEY_COLOR, 0xFFFFFFFF);
+			// mTextPaint.setColor(mBackgroundColor);
+			// if (font != null)
+			// mTextPaint.setTypeface(font);
+			// mv.updateTextBounds();
+			// }
 
-		mDx = 10 + MTRNGJNILib.randInt(20);
-		mDy = 10 + MTRNGJNILib.randInt(20);
-		float m = mDx * 2;
-		if (m > sBorderWidth)
-			sBorderWidth = m;
-		mStartX = 10;
-		mStartY = 10;
-		mSmooth = 5 - MTRNGJNILib.randInt(10);
-		// mNumWaves = 5 + MTRNGJNILib.randInt(10);
+			mDx = 10 + MTRNGJNILib.randInt(20);
+			mDy = 10 + MTRNGJNILib.randInt(20);
+			float m = mDx * 2;
+			if (m > sBorderWidth)
+				sBorderWidth = m;
+			mStartX = 10;
+			mStartY = 10;
+			mSmooth = 5 - MTRNGJNILib.randInt(10);
+			// mNumWaves = 5 + MTRNGJNILib.randInt(10);
 
-		float[] f = new float[3];
-		Color.colorToHSV(sColor, f);
+			float[] f = new float[3];
+			Color.colorToHSV(sColor, f);
 
-		f[0] = 360.f * MTRNGJNILib.randExc();// (float) Math.random();
-		// Toast.makeText(mContext, "" + f[0], 0).show();
-		mColor = Color.HSVToColor(Color.alpha(sColor), f);
-		sColor = mColor;
+			f[0] = 360.f * MTRNGJNILib.randExc();// (float) Math.random();
+			// Toast.makeText(mContext, "" + f[0], 0).show();
+			mColor = Color.HSVToColor(Color.alpha(sColor), f);
+			sColor = mColor;
+		}
 
 		mPaint = new Paint() {
 			{
@@ -140,14 +156,14 @@ public class BorderEf extends Effect implements
 			}
 		};
 
-		mPaint5 = new Paint() {
-			{
-				setStrokeWidth(1);
-				setColor(HATCH_COLOR_LINES);
-				setStyle(Paint.Style.STROKE);
-				setAntiAlias(true);
-			}
-		};
+		// mPaint5 = new Paint() {
+		// {
+		// setStrokeWidth(1);
+		// setColor(HATCH_COLOR_LINES);
+		// setStyle(Paint.Style.STROKE);
+		// setAntiAlias(true);
+		// }
+		// };
 
 		// mTextPaint = new Paint() {
 		// {
@@ -179,9 +195,6 @@ public class BorderEf extends Effect implements
 		setHue(d2);
 		// ib.setImageDrawable(d1);
 
-		this.mMode1 = mode1;
-		this.mMode2 = mode2;
-		this.mStrokeWidth = strokewidth;
 		LayoutInflater inflater = LayoutInflater.from(ctx);
 		View v = inflater.inflate(R.layout.sliding_drawer_2,
 				ma.getParentLayout(), true);
@@ -230,12 +243,12 @@ public class BorderEf extends Effect implements
 		// private final Paint lTextPaint = new Paint(mTextPaint);
 		// private final String lText = sText;
 		// private final boolean lShouldDrawText = shouldDrawText;
-		private final float lPathLength = pathLength;
-		private float pLength, cLength;
-		private final float lCurrentLength = currentLength;
+		// private final float lPathLength = pathLength;
+		// private float pLength, cLength;
+		// private final float lCurrentLength = currentLength;
 		// private final boolean lFillWithText = fillWithText;
-		private float ladj1;
-		private int ltw;
+		//private float ladj1;
+		//private int ltw;
 
 		// private void lUpdateTextBounds() {
 		// Rect bounds = new Rect();
@@ -588,7 +601,7 @@ public class BorderEf extends Effect implements
 				isMoving = false;
 				if (CirclesEf.sOnlyBorderIndex > -1) {
 					sBorderWidth = ma.getMaxWaveHeight();
-					//isLocked = false;
+					// isLocked = false;
 					ma.update(null, 0);
 				} else {
 					invalidate();
@@ -971,5 +984,93 @@ public class BorderEf extends Effect implements
 		final ColorMatrixColorFilter filter = new ColorMatrixColorFilter(
 				matrixA);
 		drawable.setColorFilter(filter);
+	}
+
+	private static class SavedEffect implements Serializable {
+
+		private int lindex;
+		private int lmBackgroundColor;
+		private int lmColor;
+		private float lmDx;
+		private float lmDy;
+		private boolean lisBlur;
+		private boolean lisRainbow;
+
+		private boolean lmustFit;
+		private boolean lmustClip;
+		private float lmStartX, lmStartY, lmSmooth, lmStrokeWidth;
+		private boolean lisCircle;
+		private int lmMode1;
+		private int lmMode2;
+
+		private SavedEffect(BorderEf ef) {
+			lindex = ef.index;
+			lmBackgroundColor = ef.mBackgroundColor;
+			lmColor = ef.mColor;
+			lmDx = ef.mDx;
+			lmDy = ef.mDy;
+			lisBlur = ef.isBlur;
+			lisRainbow = ef.isRainbow;
+
+			lmustFit = ef.mustFit;
+			lmustClip = ef.mustClip;
+			lmStartX = ef.mStartX;
+			lmStartY = ef.mStartY;
+
+			lmSmooth = ef.mSmooth;
+			lmStrokeWidth = ef.mStrokeWidth;
+			lisCircle = ef.isCircle;
+			lmMode1 = ef.mMode1;
+			lmMode2 = ef.mMode2;
+		}
+	}
+
+	@Override
+	protected void save(File folder) {
+		File f = new File(folder, index + ":" + getClass().getName());
+		Log.e("class", f.getAbsolutePath());
+		SavedEffect se = new SavedEffect(this);
+		try {
+			// FileOutputStream fileOut = new FileOutputStream(f);
+			ObjectOutputStream out = new ObjectOutputStream(
+					new FileOutputStream(f));
+			out.writeObject(se);
+			out.close();
+			// fileOut.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected boolean load(File serialized) {
+		// File f = new File(folder, index + getClass().getName());
+		// Log.e("class", f.getAbsolutePath());
+		// SavedEffect se = new SavedEffect();
+		SavedEffect se = null;
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(
+					serialized));
+			se = (SavedEffect) in.readObject();
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		mStrokeWidth = se.lmStrokeWidth;
+		mDx = se.lmDx;
+		mDy = se.lmDy;
+		mSmooth = se.lmSmooth;
+		mStartX = se.lmStartX;
+		mStartY = se.lmStartY;
+		mColor = se.lmColor;
+		mBackgroundColor = se.lmBackgroundColor;
+		isRainbow = se.lisRainbow;
+		isCircle = se.lisCircle;
+		mustFit = se.lmustFit;
+		mustClip = se.lmustClip;
+		mMode1 = se.lmMode1;
+		mMode2 = se.lmMode2;
+		return true;
 	}
 }

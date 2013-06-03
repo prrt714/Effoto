@@ -53,13 +53,25 @@
         android:visibility="gone" >
     </FrameLayout>
 
-<!--     <FrameLayout
+    <FrameLayout
+        android:id="@+id/frame_load_effect"
+        android:layout_width="200dip"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/bd1"
+        android:visibility="gone" >
+    </FrameLayout>
+
+    <!--
+         <FrameLayout
         android:id="@+id/frame_rainbow"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:visibility="gone" >
-    </FrameLayout> -->
+    </FrameLayout>
+    -->
 
 </RelativeLayout>

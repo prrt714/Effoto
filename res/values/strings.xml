@@ -78,5 +78,14 @@
     <string name="width">"Width "</string>
     <string name="default_save_format">JPEG</string>
     <string name="only_border">Only border</string>
-
+    <string name="load_effect">Load Effect</string>
+    <string name="load">Load</string>
+    <string name="save_effect">Save Effect</string>
+    <string name="clear_all">Clear All</string>
+    <string name="no_saves">No saved effects</string>
+    <string name="input_name">Input name</string>
+    <string name="effect">Effect</string>
+	<string name="share">Share</string>
+	<string name="confirm_clear_all">Clear all?</string>
+		
 </resources>

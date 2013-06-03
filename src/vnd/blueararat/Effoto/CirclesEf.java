@@ -1,5 +1,13 @@
 package vnd.blueararat.Effoto;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
@@ -10,6 +18,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -68,25 +77,31 @@ public class CirclesEf extends Effect {
 	public CirclesEf(Context ctx, float lscale) {
 		this(ctx, lscale, 0.25f / lscale + MTRNGJNILib.rand(0.25f / lscale),
 				255, 0, 0, 0, 0.6f + MTRNGJNILib.rand(0.8f), 0.6f + MTRNGJNILib
-						.rand(0.8f), 0);
+						.rand(0.8f), 0, null);
+	}
+
+	public CirclesEf(Context ctx, File serialized) {
+		this(ctx, 0, 0, 0, 0, 0, 0, 0, 0, 0, serialized);
+		ib.setImageResource(R.drawable.bt_circles_normal);
 	}
 
 	public CirclesEf(Context ctx, float lscale, float lradius, int lopacity,
 			float lrnd_pos_max, float lrnd_size_max, float lblur_radius,
-			float lsatur, float lcontrast, float lbrightness) {
+			float lsatur, float lcontrast, float lbrightness, File serialized) {
 		super(ctx);
 
 		// ib.setImageResource(R.drawable.bt_circles);
-
-		this.scale = lscale;
-		this.radius = lradius;
-		this.opacity = lopacity;
-		this.rnd_pos_max = lrnd_pos_max;
-		this.rnd_size_max = lrnd_size_max;
-		this.blur_radius = lblur_radius;
-		this.satur = lsatur;
-		this.contrast = lcontrast;
-		this.brightness = lbrightness;
+		if (serialized == null || !load(serialized)) {
+			this.scale = lscale;
+			this.radius = lradius;
+			this.opacity = lopacity;
+			this.rnd_pos_max = lrnd_pos_max;
+			this.rnd_size_max = lrnd_size_max;
+			this.blur_radius = lblur_radius;
+			this.satur = lsatur;
+			this.contrast = lcontrast;
+			this.brightness = lbrightness;
+		}
 		LayoutInflater inflater = LayoutInflater.from(ctx);
 		View v = inflater.inflate(R.layout.sliding_drawer_1,
 				ma.getParentLayout(), true);
@@ -641,5 +656,85 @@ public class CirclesEf extends Effect {
 		super.freeMemory();
 		bmp2 = null;
 		System.gc();
+	}
+
+	private static class SavedEffect implements Serializable {
+//		private int lindex;
+		private float lscale;
+		private float lradius;
+		private float lrnd_pos_max;
+		private float lrnd_size_max;
+		private float lblur_radius;
+		private float lsatur;
+		private float lcontrast;
+		private float lbrightness;
+		private int lopacity;
+		private boolean lisOnlyBorder;
+		private float lsBorderWidth;
+		private int lsOnlyBorderIndex;
+
+		// private int sOnlyBorderIndex = -1;
+		private SavedEffect(CirclesEf ef) {
+			//lindex = ef.index;
+			lscale = ef.scale;
+			lradius = ef.radius;
+			lrnd_pos_max = ef.rnd_pos_max;
+			lrnd_size_max = ef.rnd_size_max;
+			lblur_radius = ef.blur_radius;
+			lsatur = ef.satur;
+			lcontrast = ef.contrast;
+			lbrightness = ef.brightness;
+			lopacity = ef.opacity;
+			lisOnlyBorder = ef.isOnlyBorder;
+			lsBorderWidth = sBorderWidth;
+			lsOnlyBorderIndex = sOnlyBorderIndex;
+		}
+	}
+
+	@Override
+	protected void save(File folder) {
+		File f = new File(folder, index + ":" + getClass().getName());
+		Log.e("class", f.getAbsolutePath());
+		SavedEffect se = new SavedEffect(this);
+		try {
+			// FileOutputStream fileOut = new FileOutputStream(f);
+			ObjectOutputStream out = new ObjectOutputStream(
+					new FileOutputStream(f));
+			out.writeObject(se);
+			out.close();
+			// fileOut.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected boolean load(File serialized) {
+		// File f = new File(folder, index + getClass().getName());
+		// Log.e("class", f.getAbsolutePath());
+		// SavedEffect se = new SavedEffect();
+		SavedEffect se = null;
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(
+					serialized));
+			se = (SavedEffect) in.readObject();
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		scale = se.lscale;
+		radius = se.lradius;
+		rnd_pos_max = se.lrnd_pos_max;
+		rnd_size_max = se.lrnd_size_max;
+		blur_radius = se.lblur_radius;
+		satur = se.lsatur;
+		contrast = se.lcontrast;
+		brightness = se.lbrightness;
+		opacity = se.lopacity;
+		isOnlyBorder = se.lisOnlyBorder;
+		sBorderWidth = se.lsBorderWidth;
+		sOnlyBorderIndex = se.lsOnlyBorderIndex;
+		return true;
 	}
 }

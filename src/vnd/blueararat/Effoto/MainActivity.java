@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -25,8 +26,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -48,9 +52,11 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -63,7 +69,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		return mFilePath;
 	}
 
-	private FrameLayout mShareFrame;
+	private FrameLayout mShareFrame, mLoadFrame;
 
 	private MainView mImageView;
 	private SlidingDrawer mSlidingDrawer;
@@ -75,10 +81,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private Effect mCurEffect;
 	public int index;
 	private RectF mViewRect;
+	private FilenameFilter mFilenameFilter;
 
 	private Intent mShareIntent;
 
-	private ListView mListView;
+	private ListView mListView, mLoadListView;
 	private ListView mAddEffectListView;
 	private FrameLayout mAddEffectFrame;
 
@@ -94,6 +101,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private static final int ZOOM = 2;
 	private static final int OPEN_PICTURE = 1;
 	private int mode = NONE;
+	
+	private static final String icon = "icon.png";
 
 	private PointF start = new PointF();
 	private PointF mid = new PointF();
@@ -119,7 +128,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 		File cachedir = getCacheDir();
 		for (File f : cachedir.listFiles()) {
 			// if (f.getName().endsWith(".png") || f.getName().endsWith(".jpg"))
-			f.delete();
+			if (f.isFile())
+				f.delete();
 		}
 		super.onDestroy();
 	}
@@ -131,6 +141,17 @@ public class MainActivity extends Activity implements OnTouchListener {
 		setContentView(R.layout.activity_main);
 		mContext = this;
 		mShareFrame = (FrameLayout) findViewById(R.id.frame_share);
+		mLoadFrame = (FrameLayout) findViewById(R.id.frame_load_effect);
+		mFilenameFilter = new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String filename) {
+				if (dir.isDirectory())
+					return true;
+				else
+					return false;
+			}
+		};
 		mAddEffectFrame = (FrameLayout) findViewById(R.id.frame_add_effect);
 		// mFrame.setVisibility(View.GONE);
 		// mFrame.addView(new MainView(this));
@@ -271,7 +292,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	@Override
 	public void onBackPressed() {
-		if (mShareFrame.getVisibility() == View.VISIBLE) {
+		if (mLoadFrame.getVisibility() == View.VISIBLE) {
+			mLoadFrame.setVisibility(View.GONE);
+		} else if (mShareFrame.getVisibility() == View.VISIBLE) {
 			mShareFrame.setVisibility(View.GONE);
 		} else if (mAddEffectFrame.getVisibility() == View.VISIBLE) {
 			mAddEffectFrame.setVisibility(View.GONE);
@@ -500,6 +523,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 			return true;
 		int i = event.getActionMasked();
 		if (i == MotionEvent.ACTION_DOWN) {
+			if (mLoadFrame.getVisibility() == View.VISIBLE)
+				mLoadFrame.setVisibility(View.GONE);
 			if (mAddEffectFrame.getVisibility() == View.VISIBLE)
 				mAddEffectFrame.setVisibility(View.GONE);
 			if (mShareFrame.getVisibility() == View.VISIBLE)
@@ -636,6 +661,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// mShareActionProvider
 		// .setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
 		setShareIntent();
+		setLoadFrame();
 		// invalidateOptionsMenu();
 
 		// mShareActionProvider
@@ -884,6 +910,169 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// invalidateOptionsMenu();
 	}
 
+	private void setLoadFrame() {
+		mLoadFrame.setVisibility(View.GONE);
+
+		List<String> si = new ArrayList<String>();
+		int i = 0;
+		File[] fs = getCacheDir().listFiles(mFilenameFilter);
+		for (File f : fs) {
+			si.add(f.getName());
+			i++;
+			// Log.e(TAG, fg.activityInfo.name);
+		}
+		if (i == 0) {
+			si.add(getString(R.string.no_saves));
+		} else {
+			si.add(getString(R.string.clear_all));
+		}
+
+		if (mLoadListView != null) {
+			mLoadFrame.removeView(mLoadListView);
+		}
+		mLoadListView = new ListView(this);
+		mLoadListView.setPadding(4, 8, 4, 4);
+		mLoadListView.setAdapter(new ArrayAdapter<String>(this,
+				R.layout.simple_list_item_single_choice, si) {
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+
+				View view;
+				TextView text;
+				ImageView image;
+				LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
+				if (convertView == null) {
+					view = inflater.inflate(
+							R.layout.simple_list_item_single_choice, parent,
+							false);
+				} else {
+					view = convertView;
+				}
+
+				try {
+					text = (TextView) view.findViewById(R.id.title);
+					image = (ImageView) view.findViewById(R.id.icon);
+
+				} catch (ClassCastException e) {
+					throw new IllegalStateException(e.toString(), e);
+				}
+
+				String item = getItem(position);
+				text.setText(item);
+				Bitmap bmp = BitmapFactory.decodeFile((new File(new File(getCacheDir(),item),icon)).getAbsolutePath());
+				image.setImageBitmap(bmp);
+
+				return view;
+
+			}
+		});
+		// lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		// lv.setCacheColorHint(Color.TRANSPARENT);
+		mLoadListView.setVerticalFadingEdgeEnabled(false);
+		mLoadListView.setOverScrollMode(ListView.OVER_SCROLL_NEVER);
+		// lv.setSelector(R.drawable.list_selector);
+		// lv.setItemChecked(mKView.currentYUVProcessor() + positionOffset,
+		// true);
+		// lv.getAdapter()
+		if (i != 0) {
+			mLoadListView.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					if (position == parent.getCount() - 1) {
+						new AlertDialog.Builder(mContext)
+								// .setIcon(android.R.drawable.ic_dialog_alert)
+								// .setTitle("")
+								.setMessage(R.string.confirm_clear_all)
+								.setPositiveButton(android.R.string.yes,
+										new DialogInterface.OnClickListener() {
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												File[] lf = getCacheDir()
+														.listFiles(
+																mFilenameFilter);
+												for (File file : lf) {
+													for (File ef : file
+															.listFiles()) {
+														ef.delete();
+													}
+													file.delete();
+												}
+												setLoadFrame();
+												mLoadFrame
+														.setVisibility(View.VISIBLE);
+											}
+
+										})
+								.setNegativeButton(android.R.string.no, null)
+								.show();
+					} else {
+						String item = (String) parent
+								.getItemAtPosition(position);
+						File folder = new File(getCacheDir(), item);
+						load(folder);
+					}
+				}
+			});
+			mLoadListView
+					.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+						@Override
+						public boolean onItemLongClick(AdapterView<?> parent,
+								View view, int position, long id) {
+							final CharSequence[] items = {
+									mContext.getString(R.string.remove),
+									mContext.getString(R.string.load) };
+							// TextView text = (TextView) view
+							// .findViewById(R.id.title);
+							String item = (String) parent
+									.getItemAtPosition(position);
+							final File f = new File(getCacheDir(), item);
+
+							new AlertDialog.Builder(mContext)// .setTitle(R.string.pick_color);
+									.setItems(
+											items,
+											new DialogInterface.OnClickListener() {
+												public void onClick(
+														DialogInterface dialog,
+														int which) {
+													switch (which) {
+													case 0:
+														File[] files = f
+																.listFiles();
+														for (File file : files) {
+															file.delete();
+														}
+														f.delete();
+														setLoadFrame();
+														mLoadFrame
+																.setVisibility(View.VISIBLE);
+														break;
+													case 1:
+														load(f);
+														break;
+													}
+												}
+											}).show();
+							return true;
+
+						}
+
+					});
+
+		}
+
+		mLoadFrame.addView(mLoadListView);
+
+		// Toast.makeText(this,
+		// "" + Uri.fromFile(new File(outputDir, "tmp" + mExt)), 0).show();
+		// mShareActionProvider.setShareIntent(mShareIntent);
+		// invalidateOptionsMenu();
+	}
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		if (mActiveEffect instanceof BorderEf) {
@@ -945,6 +1134,42 @@ public class MainActivity extends Activity implements OnTouchListener {
 			else
 				mShareFrame.setVisibility(View.GONE);
 			break;
+		case R.id.menu_save_eff:
+			if (list.size() == 0)
+				break;
+			final EditText input = new EditText(this);
+			File[] lf = getCacheDir().listFiles(mFilenameFilter);
+			input.setText(mContext.getString(R.string.effect) + (lf.length + 1));
+
+			new AlertDialog.Builder(mContext)
+					.setTitle(R.string.input_name)
+					// .setMessage(
+					// this.prefs.getString(
+					// Prefs.KEY_FOLDER,
+					// Environment
+					// .getExternalStoragePublicDirectory(
+					// Environment.DIRECTORY_PICTURES)
+					// .toString())
+					// + "/")
+					.setView(input)
+					.setPositiveButton(android.R.string.yes,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									String effname = input.getText().toString();
+									if (effname.length() == 0)
+										return;
+									saveEffect(effname);
+									setLoadFrame();
+								}
+							}).setNegativeButton(android.R.string.no, null)
+					.show();
+		case R.id.menu_load_eff:
+			if (mLoadFrame.getVisibility() == View.GONE)
+				mLoadFrame.setVisibility(View.VISIBLE);
+			else
+				mLoadFrame.setVisibility(View.GONE);
+			break;
 		case R.id.fit:
 			item.setChecked(!item.isChecked());
 			((BorderEf) mActiveEffect).setFit(item.isChecked());
@@ -968,6 +1193,155 @@ public class MainActivity extends Activity implements OnTouchListener {
 			break;
 		}
 		return true;
+	}
+
+	public void saveEffect(String effname) {
+		final File eff_folder = new File(getCacheDir(), effname);
+		eff_folder.mkdirs();
+		for (Effect ef : list) {
+			ef.save(eff_folder);
+		}
+		exportIcon(new File(eff_folder, icon));
+	}
+
+	private void exportIcon(File imageFile) {
+		Bitmap bmp = Bitmap.createBitmap(72, 72, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bmp);
+		int m = 0;
+		int n = 0;
+		Paint p = new Paint();
+		p.setDither(true);
+		p.setAntiAlias(true);
+
+		Rect src = new Rect(0, 0, 72, 72);
+		int cc = getButtonLayout().getChildCount();
+		if (cc > 10)
+			cc = 10;
+		for (int k = 1; k < cc; k++) {
+			m = ((k-1) / 3)*24;
+			n = ((k-1) % 3)*24;
+			Rect dst = new Rect(m, n, 48 - m, 48 - n);
+			ImageButton ib = (ImageButton) getButtonLayout().getChildAt(k);
+			Bitmap bm = ((BitmapDrawable) ib.getDrawable()).getBitmap();
+			canvas.drawBitmap(bm, src, dst, p);
+		}
+
+		Bitmap.CompressFormat mCf = Bitmap.CompressFormat.PNG;
+		int mQ = 100;
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		bmp.compress(mCf, mQ, stream);
+		byte[] byteArray = stream.toByteArray();
+		stream = null;
+		bmp.recycle();
+		System.gc();
+		BufferedOutputStream out = null;
+
+		try {
+			out = new BufferedOutputStream(new FileOutputStream(imageFile));
+			out.write(byteArray);
+		} catch (Exception e) {
+		} finally {
+			try {
+				out.close();
+			} catch (Exception e) {
+				// e.printStackTrace();
+			}
+		}
+
+		byteArray = null;
+		System.gc();
+	}
+
+	void load(File folder) {
+		for (Effect ef : list) {
+			ef.destroy();
+		}
+		mActiveEffect = null;
+		Effect.count = 0;
+		Effect.opts = new Options();
+		CirclesEf.sOnlyBorderIndex = -1;
+		Effect.isLocked = false;
+		list.clear();
+		Effect ef = null;
+		FilenameFilter fnf = new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String filename) {
+				if (filename.startsWith("i"))
+					return false;
+				return true;
+			}
+		};
+		File[] efs = folder.listFiles(fnf);
+		for (File sr : efs) {
+			String className = sr.getName().split(":")[1];
+
+			try {
+				Class c = getClassLoader().loadClass(className);
+				Constructor constructors[] = c.getConstructors();
+				Constructor constructor = null;
+				for (Constructor cr : constructors) {
+					Class[] cs = cr.getParameterTypes();
+					if (cs.length == 2 && cs[0] == Context.class
+							&& cs[1] == File.class) {
+						constructor = cr;
+					}
+				}
+				try {
+					ef = (Effect) (constructor.newInstance(mContext, sr));
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				list.add(ef);
+
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		index = list.size() - 1;
+		// ef.setBitmap(resultBitmap);
+
+		// mActiveEffect = ef;
+		// update(bmp1, 0);
+		ef.activate();
+		// update(resultBitmap, index);
+
+		// update(null, 0);
+		mLoadFrame.setVisibility(View.GONE);
+
+		// File fl = new File(getCacheDir(), mFileName + mExt);
+		// String fn = mFileName + "-"
+		// + mContext.getString(R.string.app_name) + mExt;
+		// File fl = new File(getCacheDir(), fn);
+		// mShareIntent = ShareCompat.IntentBuilder
+		// .from(MainActivity.this).setStream(Uri.fromFile(fl))
+		// //
+		// .setText("This site has lots of great information about Android! http://www.android.com")
+		// .setType("image/*").getIntent();
+		// mShareIntent.setComponent(item.getCn());
+		// //
+		// mShareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		// //
+		// mShareIntent.setPackage(item.getCn().getPackageName());
+		// // Log.e(TAG, "" + item.getCn());
+		// new Export().execute(getCacheDir().getAbsolutePath(),
+		// fn);
+		// // startActivity(mShareIntent);
+		// // startActivity(il[position]);
+
 	}
 
 	public void addEffectOnClick(View v) {
@@ -1048,7 +1422,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 							}
 							list.add(ef);
 							index = list.size() - 1;
-							ef.setBitmap(resultBitmap);
+							if (resultBitmap != null)
+								ef.setBitmap(resultBitmap);
 							ef.activate();
 							// mActiveEffect = ef;
 							if (CirclesEf.sOnlyBorderIndex > -1
