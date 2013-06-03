@@ -19,7 +19,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -660,7 +659,7 @@ public class CirclesEf extends Effect {
 	}
 
 	private static class SavedEffect implements Serializable {
-//		private int lindex;
+		// private int lindex;
 		private float lscale;
 		private float lradius;
 		private float lrnd_pos_max;
@@ -676,7 +675,7 @@ public class CirclesEf extends Effect {
 
 		// private int sOnlyBorderIndex = -1;
 		private SavedEffect(CirclesEf ef) {
-			//lindex = ef.index;
+			// lindex = ef.index;
 			lscale = ef.scale;
 			lradius = ef.radius;
 			lrnd_pos_max = ef.rnd_pos_max;
@@ -695,7 +694,7 @@ public class CirclesEf extends Effect {
 	@Override
 	protected void save(File folder) {
 		File f = new File(folder, index + ":" + getClass().getName());
-		Log.e("class", f.getAbsolutePath());
+		// Log.e("class", f.getAbsolutePath());
 		SavedEffect se = new SavedEffect(this);
 		try {
 			// FileOutputStream fileOut = new FileOutputStream(f);

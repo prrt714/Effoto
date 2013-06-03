@@ -28,7 +28,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.FloatMath;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -247,8 +246,8 @@ public class BorderEf extends Effect implements
 		// private float pLength, cLength;
 		// private final float lCurrentLength = currentLength;
 		// private final boolean lFillWithText = fillWithText;
-		//private float ladj1;
-		//private int ltw;
+		// private float ladj1;
+		// private int ltw;
 
 		// private void lUpdateTextBounds() {
 		// Rect bounds = new Rect();
@@ -1029,7 +1028,7 @@ public class BorderEf extends Effect implements
 	@Override
 	protected void save(File folder) {
 		File f = new File(folder, index + ":" + getClass().getName());
-		Log.e("class", f.getAbsolutePath());
+		// Log.e("class", f.getAbsolutePath());
 		SavedEffect se = new SavedEffect(this);
 		try {
 			// FileOutputStream fileOut = new FileOutputStream(f);

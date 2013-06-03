@@ -43,7 +43,6 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.ShareCompat;
 import android.util.FloatMath;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,7 +56,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -115,7 +113,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private Context mContext;
 	private int mOrientation;
 
-	private float m1x, m1y;
+	private static File sEffectsFolder;
+
+	// private float m1x, m1y;
 
 	// private ExifInterface oldexif;
 
@@ -126,8 +126,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		Effect.isLocked = false;
 		Effect.count = 0;
 		CirclesEf.sOnlyBorderIndex = -1;
-		File cachedir = getCacheDir();
-		for (File f : cachedir.listFiles()) {
+		for (File f : getCacheDir().listFiles()) {
 			// if (f.getName().endsWith(".png") || f.getName().endsWith(".jpg"))
 			if (f.isFile())
 				f.delete();
@@ -139,6 +138,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Effect.count = 0;
+		sEffectsFolder = new File(getFilesDir(), "Effects");
+		if (!sEffectsFolder.exists())
+			sEffectsFolder.mkdirs();
 		setContentView(R.layout.activity_main);
 		mContext = this;
 		mShareFrame = (FrameLayout) findViewById(R.id.frame_share);
@@ -178,7 +180,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 				mFilePath = f.getAbsolutePath();
 				mFileName = f.getName();
-				// Log.e("123", mFilePath);
 				try {
 					bmp1 = MediaStore.Images.Media.getBitmap(
 							getContentResolver(), uri);
@@ -916,7 +917,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 		List<String> si = new ArrayList<String>();
 		int i = 0;
-		File[] fs = getCacheDir().listFiles(mFilenameFilter);
+		File[] fs = sEffectsFolder.listFiles(mFilenameFilter);
 		for (File f : fs) {
 			si.add(f.getName());
 			i++;
@@ -962,7 +963,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 				String item = getItem(position);
 				text.setText(item);
 				Bitmap bmp = BitmapFactory.decodeFile((new File(new File(
-						getCacheDir(), item), icon)).getAbsolutePath());
+						sEffectsFolder, item), icon)).getAbsolutePath());
 				image.setImageBitmap(bmp);
 
 				return view;
@@ -993,9 +994,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 											public void onClick(
 													DialogInterface dialog,
 													int which) {
-												File[] lf = getCacheDir()
-														.listFiles(
-																mFilenameFilter);
+												File[] lf = sEffectsFolder
+														.listFiles(mFilenameFilter);
 												for (File file : lf) {
 													for (File ef : file
 															.listFiles()) {
@@ -1014,7 +1014,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 					} else {
 						String item = (String) parent
 								.getItemAtPosition(position);
-						File folder = new File(getCacheDir(), item);
+						File folder = new File(sEffectsFolder, item);
 						load(folder);
 					}
 				}
@@ -1033,7 +1033,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 							// .findViewById(R.id.title);
 							final String item = (String) parent
 									.getItemAtPosition(position);
-							final File f = new File(getCacheDir(), item);
+							final File f = new File(sEffectsFolder, item);
 
 							new AlertDialog.Builder(mContext)// .setTitle(R.string.pick_color);
 									.setItems(
@@ -1083,7 +1083,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 																						effname);
 																				f.renameTo(newfile);
 																				setLoadFrame();
-																				mLoadFrame.setVisibility(View.VISIBLE);
+																				mLoadFrame
+																						.setVisibility(View.VISIBLE);
 																			}
 																		})
 																.setNegativeButton(
@@ -1113,10 +1114,12 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem item = menu.findItem(R.id.menu_save_eff);
+		item.setEnabled(list.size() != 0);
 		if (mActiveEffect instanceof BorderEf) {
 			BorderEf be = (BorderEf) mActiveEffect;
 
-			MenuItem item = menu.findItem(R.id.fit);
+			item = menu.findItem(R.id.fit);
 			item.setVisible(true);
 			item.setChecked(be.getFit());
 
@@ -1137,7 +1140,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			menu.findItem(R.id.circle).setVisible(false);
 			menu.findItem(R.id.postmark).setVisible(false);
 			menu.findItem(R.id.clip).setVisible(false);
-			MenuItem item = menu.findItem(R.id.only_border);
+			item = menu.findItem(R.id.only_border);
 
 			if (mActiveEffect instanceof CirclesEf && Effect.sBorderWidth > 0) {
 				CirclesEf ce = (CirclesEf) mActiveEffect;
@@ -1175,8 +1178,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		case R.id.menu_save_eff:
 			if (list.size() == 0)
 				break;
+			mLoadFrame.setVisibility(View.VISIBLE);
 			final EditText input = new EditText(this);
-			File[] lf = getCacheDir().listFiles(mFilenameFilter);
+			File[] lf = sEffectsFolder.listFiles(mFilenameFilter);
 			input.setText(mContext.getString(R.string.effect) + (lf.length + 1));
 
 			new AlertDialog.Builder(mContext)
@@ -1203,6 +1207,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 								}
 							}).setNegativeButton(android.R.string.no, null)
 					.show();
+			break;
 		case R.id.menu_load_eff:
 			if (mLoadFrame.getVisibility() == View.GONE)
 				mLoadFrame.setVisibility(View.VISIBLE);
@@ -1235,7 +1240,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	}
 
 	public void saveEffect(String effname) {
-		final File eff_folder = new File(getCacheDir(), effname);
+		final File eff_folder = new File(sEffectsFolder, effname);
 		eff_folder.mkdirs();
 		for (Effect ef : list) {
 			ef.save(eff_folder);
