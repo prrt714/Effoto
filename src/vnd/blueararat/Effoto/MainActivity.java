@@ -322,6 +322,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	@Override
 	protected void onResume() {
+		MTRNGJNILib.randomize();
 		String ext = isPNG ? ".png" : ".jpg";
 		if (!mExt.equals(ext)) {
 			mExt = ext;

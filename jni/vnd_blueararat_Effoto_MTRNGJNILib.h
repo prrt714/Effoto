@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     vnd_blueararat_Effoto_MTRNGJNILib
+ * Method:    randomize
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_vnd_blueararat_Effoto_MTRNGJNILib_randomize
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     vnd_blueararat_Effoto_MTRNGJNILib
  * Method:    rand
  * Signature: ()F
  */

@@ -9,6 +9,12 @@
 
 static MTRand mtrand1;
 
+JNIEXPORT void JNICALL Java_vnd_blueararat_Effoto_MTRNGJNILib_randomize
+  (JNIEnv *, jclass)
+{
+	mtrand1.seed();
+}
+
 JNIEXPORT jfloat JNICALL Java_vnd_blueararat_Effoto_MTRNGJNILib_rand__
   (JNIEnv *, jclass)
 {

@@ -28,6 +28,7 @@ public class MTRNGJNILib {
      * @param width the current view width
      * @param height the current view height
      */
+     public static native void randomize();
      public static native float rand();
      public static native float rand(float f);
      public static native float randExc();

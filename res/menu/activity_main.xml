@@ -19,7 +19,6 @@
     <item
         android:id="@+id/menu_save_eff"
         android:icon="@android:drawable/ic_menu_save"
-        android:showAsAction="ifRoom"
         android:title="@string/save_effect"/>
     <item
         android:id="@+id/menu_load_eff"
