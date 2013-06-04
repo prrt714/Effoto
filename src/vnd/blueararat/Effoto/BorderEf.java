@@ -142,6 +142,15 @@ public class BorderEf extends Effect implements
 			// Toast.makeText(mContext, "" + f[0], 0).show();
 			mColor = Color.HSVToColor(Color.alpha(sColor), f);
 			sColor = mColor;
+
+			float[] f2 = new float[3];
+			for (int i = 0; i < 7; i++) {
+				Color.colorToHSV(mColors[i], f2);
+				f2[1] = f[1];
+				f2[2] = f[2];
+				mColors[i] = Color.HSVToColor(f2);
+			}
+
 		}
 
 		mPaint = new Paint() {
@@ -535,14 +544,14 @@ public class BorderEf extends Effect implements
 		// }
 	}
 
-//	@Override
-//	public void setBitmap(Bitmap bmp1) {
-//		super.setBitmap(bmp1);
-//		if (!iAmLocked) {
-//			mCenterRainbowX = mBitmapWidth / 2;
-//			mCenterRainbowY = mBitmapHeight / 2;
-//		}
-//	}
+	// @Override
+	// public void setBitmap(Bitmap bmp1) {
+	// super.setBitmap(bmp1);
+	// if (!iAmLocked) {
+	// mCenterRainbowX = mBitmapWidth / 2;
+	// mCenterRainbowY = mBitmapHeight / 2;
+	// }
+	// }
 
 	@Override
 	public void rescale(float scale) {

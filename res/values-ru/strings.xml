@@ -71,5 +71,17 @@
     <string name="randofpos">"Случайность\nположения"</string>
     <string name="randofsz">"Случайность\nразмера"</string>
     <string name="satur">Насыщенность</string>
+    <string name="load_effect">Сохраненные эффекты</string>
+    <string name="load">Загрузи</string>
+    <string name="rename">Переименуй</string>
+    <string name="save_effect">Сохрани эффект</string>
+    <string name="clear_all">Сотри все</string>
+    <string name="no_saves">Нет сохраненных</string>
+    <string name="input_name">Введи имя</string>
+    <string name="input_new_name">Введи новое имя</string>
+    <string name="effect">Эффект</string>
+    <string name="share">Поделись</string>
+    <string name="confirm_clear_all">Стереть все?</string>
+    <string name="remove">Удали</string>
 
 </resources>
