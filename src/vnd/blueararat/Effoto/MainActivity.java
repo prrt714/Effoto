@@ -26,10 +26,13 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -54,11 +57,17 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -1125,6 +1134,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 			item.setVisible(true);
 			item.setChecked(be.getCircle());
 
+			item = menu.findItem(R.id.draw);
+			item.setVisible(true);
+
 			item = menu.findItem(R.id.clip);
 			item.setVisible(true);
 			item.setChecked(be.getClip());
@@ -1136,6 +1148,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		} else {
 			menu.findItem(R.id.fit).setVisible(false);
 			menu.findItem(R.id.circle).setVisible(false);
+			menu.findItem(R.id.draw).setVisible(false);
 			menu.findItem(R.id.postmark).setVisible(false);
 			menu.findItem(R.id.clip).setVisible(false);
 			item = menu.findItem(R.id.only_border);
@@ -1219,6 +1232,165 @@ public class MainActivity extends Activity implements OnTouchListener {
 		case R.id.circle:
 			item.setChecked(!item.isChecked());
 			((BorderEf) mActiveEffect).setCircle(item.isChecked());
+			break;
+		case R.id.draw:
+			LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+			final View view = inflater.inflate(R.layout.draw_dialog, null,
+					false);
+			setViewGroupFont((RelativeLayout) view, Typeface.MONOSPACE);
+			final CheckBox shouldDraw = (CheckBox) view
+					.findViewById(R.id.should_draw);
+			final ImageView image = (ImageView) view
+					.findViewById(R.id.drawimage);
+			final SeekBar paint_radius = (SeekBar) view
+					.findViewById(R.id.paint_radius);
+			final SeekBar paint_blur = (SeekBar) view
+					.findViewById(R.id.paint_blur);
+			final SeekBar frequency = (SeekBar) view
+					.findViewById(R.id.frequency);
+			final TextView frequency_val = (TextView) view
+					.findViewById(R.id.frequency_val);
+			// int sq_side = 300;// paint_blur.getWidth();
+			// Matrix m = new Matrix();
+			// m.setRectToRect(new RectF(0, 0, 72, 72), new RectF(0, 0, sq_side,
+			// sq_side), Matrix.ScaleToFit.CENTER);
+
+			final Paint p = new Paint() {
+				{
+					setAntiAlias(true);
+					setDither(true);
+					setColor(((BorderEf) mActiveEffect).getColor());
+					setStyle(Paint.Style.FILL);
+					setStrokeWidth(paint_radius.getProgress() + 1);
+				}
+			};
+
+			Bitmap draw_bitmap = Bitmap.createBitmap(400, 400,
+					Bitmap.Config.ARGB_8888);
+			final Canvas canvas = new Canvas(draw_bitmap);
+			shouldDraw
+					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+						@Override
+						public void onCheckedChanged(CompoundButton buttonView,
+								boolean isChecked) {
+							if (!isChecked) {
+								canvas.drawColor(Color.TRANSPARENT,
+										PorterDuff.Mode.CLEAR);
+								image.invalidate();
+							}
+						}
+					});
+
+			paint_radius
+					.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+						@Override
+						public void onStopTrackingTouch(SeekBar seekBar) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onStartTrackingTouch(SeekBar seekBar) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onProgressChanged(SeekBar seekBar,
+								int progress, boolean fromUser) {
+							p.setStrokeWidth(progress + 1);
+						}
+					});
+
+			BlurMaskFilter blur = new BlurMaskFilter(paint_blur.getProgress(),
+					BlurMaskFilter.Blur.NORMAL);
+			p.setMaskFilter(blur);
+
+			paint_blur
+					.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+						@Override
+						public void onStopTrackingTouch(SeekBar seekBar) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onStartTrackingTouch(SeekBar seekBar) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onProgressChanged(SeekBar seekBar,
+								int progress, boolean fromUser) {
+							if (progress != 0) {
+								BlurMaskFilter blur = new BlurMaskFilter(
+										progress, BlurMaskFilter.Blur.NORMAL);
+								p.setMaskFilter(blur);
+							} else {
+								p.setMaskFilter(null);
+							}
+						}
+					});
+			frequency_val
+					.setText(Integer.toString(frequency.getProgress() + 1));
+			frequency.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+				}
+
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+				}
+
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress,
+						boolean fromUser) {
+					frequency_val.setText(Integer.toString(progress + 1));
+				}
+			});
+
+			image.setImageBitmap(draw_bitmap);
+			// image.setImageMatrix(m);
+
+			image.setOnTouchListener(new OnTouchListener() {
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					canvas.drawCircle(event.getX(), event.getY(),
+							p.getStrokeWidth(), p);// Point(event.getX(),
+													// event.getY(), p);
+					v.invalidate();
+					return true;
+				}
+			});
+
+			new AlertDialog.Builder(this)
+					// .setMessage(R.string.input)
+					.setView(view)
+					.setPositiveButton(android.R.string.yes,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									if (shouldDraw.isChecked()) {
+										((BorderEf) mActiveEffect).setBitmapPoint(
+												((BitmapDrawable) image
+														.getDrawable())
+														.getBitmap(), frequency
+														.getProgress() + 1);
+									} else {
+										((BorderEf) mActiveEffect)
+												.setBitmapPoint(null, 0);
+									}
+									mActiveEffect.invalidate();
+								}
+							}).setNegativeButton(android.R.string.no, null)
+					.show();
+
 			break;
 		case R.id.clip:
 			item.setChecked(!item.isChecked());

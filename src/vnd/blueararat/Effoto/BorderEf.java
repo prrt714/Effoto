@@ -19,6 +19,7 @@ import android.graphics.EmbossMaskFilter;
 import android.graphics.MaskFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
@@ -50,7 +51,8 @@ public class BorderEf extends Effect implements
 
 	// private long i1;
 	// public int index;
-
+	private static final int OFFSET = -36;
+	private static final int WIDTH = 72;
 	private Paint mPaint, mBitmapPaint;// , mTextPaint;
 	private MaskFilter mEmboss;
 	private MaskFilter mBlur;
@@ -99,6 +101,8 @@ public class BorderEf extends Effect implements
 	private WaveSettingsLayout sd;
 	private float[] mFitted = new float[6];
 	private Drawable d1, d2;
+	private Bitmap bpoint;
+	private int frequency;
 
 	public BorderEf(Context ctx) {
 		this(ctx, Color.WHITE, 0, 0, sStrokeWidth, null);
@@ -471,6 +475,18 @@ public class BorderEf extends Effect implements
 
 			canvas = new Canvas(bitmap2);
 			canvas.drawPath(path, paint);
+
+			if (bpoint != null) {
+				Paint pt = new Paint();
+				PathMeasure pm = new PathMeasure(path, false);
+				float coord[] = { 0, 0 };
+				float l = pm.getLength() / frequency;
+				canvas.translate(OFFSET, OFFSET);
+				for (int i = 0; i < frequency; i++) {
+					pm.getPosTan(l * i, coord, null);
+					canvas.drawBitmap(bpoint, coord[0], coord[1], pt);
+				}
+			}
 
 			// if (lShouldDrawText) {
 			// PathMeasure pm = new PathMeasure(path, true);
@@ -1002,6 +1018,15 @@ public class BorderEf extends Effect implements
 		final ColorMatrixColorFilter filter = new ColorMatrixColorFilter(
 				matrixA);
 		drawable.setColorFilter(filter);
+	}
+
+	public void setBitmapPoint(Bitmap bp, int freq) {
+		if (bp == null) {
+			bpoint = null;
+		} else {
+			bpoint = Bitmap.createScaledBitmap(bp, WIDTH, WIDTH, false);
+			frequency = freq;
+		}
 	}
 
 	private static class SavedEffect implements Serializable {

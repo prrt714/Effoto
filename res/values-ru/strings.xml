@@ -83,5 +83,8 @@
     <string name="share">Поделись</string>
     <string name="confirm_clear_all">Стереть все?</string>
     <string name="remove">Удали</string>
-
+    <string name="frequency">Сколько</string>
+    <string name="shoulddraw">Надо рисовать</string>
+    <string name="draw">Рисуй</string>
+    
 </resources>

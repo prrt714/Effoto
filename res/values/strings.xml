@@ -89,5 +89,8 @@
     <string name="effect">Effect</string>
     <string name="share">Share</string>
     <string name="confirm_clear_all">Clear all?</string>
+    <string name="frequency">How many</string>
+    <string name="shoulddraw">Should Draw</string>
+    <string name="draw">Draw</string>
 
 </resources>

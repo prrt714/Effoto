@@ -41,6 +41,9 @@
         android:checkable="true"
         android:title="@string/clip"/>
     <item
+        android:id="@+id/draw"
+        android:title="@string/draw"/>
+    <item
         android:id="@+id/only_border"
         android:checkable="true"
         android:title="@string/only_border"/>
