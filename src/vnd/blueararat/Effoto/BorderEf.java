@@ -471,7 +471,7 @@ public class BorderEf extends Effect implements
 				paint.setMaskFilter(emboss);
 			}
 
-			if (lStartX == 0 && lStartY == 0 && !lCircle) {
+			if (!lFit && lStartX == 0 && lStartY == 0 && !lCircle) {
 				float p = strwidth / 2;
 				canvas.drawRect(p, p, bitmap.getWidth() - p, bitmap.getHeight()
 						- p, paint);
@@ -975,6 +975,10 @@ public class BorderEf extends Effect implements
 		}
 	}
 
+	// public boolean getPostmark() {
+	// return (!isCircle && !mustFit && mStartX == 0 && mStartY == 0);
+	// }
+
 	public boolean getFit() {
 		return mustFit;
 	}
@@ -990,6 +994,8 @@ public class BorderEf extends Effect implements
 	public float getWaveHeight() {
 		if (mustFit) {
 			return mFitted[0];
+		} else if (!isCircle && mStartX == 0 && mStartY == 0) {
+			return mDx / 2;
 		}
 		return mDx;
 	}

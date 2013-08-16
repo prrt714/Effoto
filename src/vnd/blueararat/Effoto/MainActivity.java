@@ -2029,6 +2029,16 @@ public class MainActivity extends Activity implements OnTouchListener {
 			}
 		}
 		CirclesEf.sOnlyBorderIndex = m - 1;
+
+		if (i == 0) {
+			for (Effect ef : list) {
+				if (ef instanceof CirclesEf) {
+					((CirclesEf) ef).isOnlyBorder = false;
+				}
+			}
+			CirclesEf.sOnlyBorderIndex = -1;
+		}
+
 		return i * 2.f;
 	}
 
