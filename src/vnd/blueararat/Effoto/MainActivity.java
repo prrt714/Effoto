@@ -1481,7 +1481,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 			@Override
 			public boolean accept(File dir, String filename) {
-				if (filename.startsWith("i"))
+				if (filename.startsWith("i") || filename.startsWith("b"))
 					return false;
 				return true;
 			}

@@ -1,5 +1,7 @@
 package vnd.blueararat.Effoto;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +12,7 @@ import java.io.Serializable;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -51,8 +54,9 @@ public class BorderEf extends Effect implements
 
 	// private long i1;
 	// public int index;
-	private static final int OFFSET = -36;
-	private static final int WIDTH = 72;
+	public static final int OFFSET = -36;
+	public static final int WIDTH = 72;
+	public static final String BPOINT_NAME = "bpoint.png";
 	private Paint mPaint, mBitmapPaint;// , mTextPaint;
 	private MaskFilter mEmboss;
 	private MaskFilter mBlur;
@@ -1048,6 +1052,7 @@ public class BorderEf extends Effect implements
 		private boolean lisCircle;
 		private int lmMode1;
 		private int lmMode2;
+		private int lfrequency;
 
 		private SavedEffect(BorderEf ef) {
 			lindex = ef.index;
@@ -1072,6 +1077,7 @@ public class BorderEf extends Effect implements
 			lisCircle = ef.isCircle;
 			lmMode1 = ef.mMode1;
 			lmMode2 = ef.mMode2;
+			lfrequency = ef.frequency;
 		}
 	}
 
@@ -1089,6 +1095,30 @@ public class BorderEf extends Effect implements
 			// fileOut.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		if (bpoint != null) {
+			File imageFile = new File(folder, BPOINT_NAME + index);
+			Bitmap.CompressFormat mCf = Bitmap.CompressFormat.PNG;
+			int mQ = 100;
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			bpoint.compress(mCf, mQ, stream);
+			byte[] byteArray = stream.toByteArray();
+			stream = null;
+			BufferedOutputStream out = null;
+
+			try {
+				out = new BufferedOutputStream(new FileOutputStream(imageFile));
+				out.write(byteArray);
+			} catch (Exception e) {
+			} finally {
+				try {
+					out.close();
+				} catch (Exception e) {
+				}
+			}
+			byteArray = null;
+			System.gc();
+
 		}
 	}
 
@@ -1126,6 +1156,13 @@ public class BorderEf extends Effect implements
 		mustClip = se.lmustClip;
 		mMode1 = se.lmMode1;
 		mMode2 = se.lmMode2;
+		frequency = se.lfrequency;
+		String s_ind = serialized.getName().split(":")[0];
+		File imageFile = new File(serialized.getParentFile(), BPOINT_NAME
+				+ s_ind);
+		if (imageFile.exists()) {
+			bpoint = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+		}
 		return true;
 	}
 }
