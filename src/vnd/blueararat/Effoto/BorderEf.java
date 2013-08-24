@@ -1032,6 +1032,10 @@ public class BorderEf extends Effect implements
 		return bp;
 	}
 
+	public boolean shouldDraw() {
+		return (bpoint != null);
+	}
+
 	private static class SavedEffect implements Serializable {
 
 		private int lindex;

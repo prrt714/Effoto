@@ -1101,6 +1101,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 			item = menu.findItem(R.id.draw);
 			item.setVisible(true);
+			item.setChecked(be.shouldDraw());
 
 			item = menu.findItem(R.id.clip);
 			item.setVisible(true);
@@ -1271,10 +1272,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 							.show();
 				}
 			});
-			Bitmap draw_bitmap;
-			if (menuitem.isChecked()) {
+			Bitmap draw_bitmap = ((BorderEf) mActiveEffect).getBitmapPoint();
+			if (menuitem.isChecked() && draw_bitmap != null) {
 				shouldDraw.setChecked(true);
-				draw_bitmap = ((BorderEf) mActiveEffect).getBitmapPoint();
 			} else {
 				draw_bitmap = Bitmap.createBitmap(BorderEf.BWIDTH,
 						BorderEf.BWIDTH, Bitmap.Config.ARGB_8888);
