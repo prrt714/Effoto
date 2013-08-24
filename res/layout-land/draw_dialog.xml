@@ -20,76 +20,87 @@
             android:background="@drawable/backgd" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll0"
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_toRightOf="@+id/ll"
-        android:orientation="vertical"
-        android:padding="2dip" >
-
-        <CheckBox
-            android:id="@+id/should_draw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/shoulddraw" />
-
-        <TextView
-            android:id="@+id/paint_width_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/width"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <SeekBar
-            android:id="@+id/paint_radius"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="71"
-            android:progress="19" />
-
-        <TextView
-            android:id="@+id/paint_blur_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/blur"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <SeekBar
-            android:id="@+id/paint_blur"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="72"
-            android:progress="18" />
-
-        <TextView
-            android:id="@+id/frequency_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/frequency"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_toRightOf="@+id/ll" >
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/ll0"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical" >
+            android:orientation="vertical"
+            android:padding="2dip" >
 
-            <SeekBar
-                android:id="@+id/frequency"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:max="199"
-                android:progress="39" />
-
-            <TextView
-                android:id="@+id/frequency_val"
+            <ImageView
+                android:id="@+id/colorimage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:id="@+id/should_draw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/draw"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/paint_width_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/width"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <SeekBar
+                android:id="@+id/paint_radius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="71"
+                android:progress="19" />
+
+            <TextView
+                android:id="@+id/paint_blur_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/blur"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <SeekBar
+                android:id="@+id/paint_blur"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="72"
+                android:progress="18" />
+
+            <TextView
+                android:id="@+id/frequency_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/frequency"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
+
+                <SeekBar
+                    android:id="@+id/frequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="199"
+                    android:progress="39" />
+
+                <TextView
+                    android:id="@+id/frequency_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

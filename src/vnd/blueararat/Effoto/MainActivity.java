@@ -51,6 +51,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -662,44 +663,13 @@ public class MainActivity extends Activity implements OnTouchListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
-		// Locate MenuItem with ShareActionProvider
-		// MenuItem item = menu.findItem(R.id.menu_item_share);
-
-		// Fetch and store ShareActionProvider
-		// mShareActionProvider = (ShareActionProvider)
-		// item.getActionProvider();
-		// mShareActionProvider
-		// .setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
 		setShareIntent();
 		setLoadFrame();
-		// invalidateOptionsMenu();
-
-		// mShareActionProvider
-		// .setOnShareTargetSelectedListener(new
-		// ShareActionProvider.OnShareTargetSelectedListener() {
-		// public boolean onShareTargetSelected(
-		// ShareActionProvider source, Intent intent) {
-		// Uri uri = exportImage(getCacheDir().toString(), "tmp");
-		// if (uri == null)
-		// return true;
-		// try {
-		// // mShareIntent.putExtra(Intent.EXTRA_STREAM,
-		// // uri.toString());
-		// // mShareActionProvider.setShareIntent(mShareIntent);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		// // invalidateOptionsMenu();
-		// return false;
-		// }
-		// });
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	private void setShareIntent() {
 		mShareFrame.setVisibility(View.GONE);
-		// mShareIntent = new Intent(Intent.ACTION_SEND);
-		// final File outputDir = getCacheDir();
 
 		Intent intent = ShareCompat.IntentBuilder.from(this).setType("image/*")
 				.getIntent();
@@ -709,15 +679,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 				// .setText("This site has lots of great information about Android! http://www.android.com")
 				.setType("image/*").getIntent();
 
-		// mShareIntent.setType("image/*");
-		// final String outputDir = getCacheDir().toString();
-		// mShareIntent.putExtra(Intent.EXTRA_STREAM,
-		// Uri.fromFile(new File(outputDir, "tmp" + mExt)));
 		PackageManager pm = getPackageManager();
 
 		List<ResolveInfo> infoList = pm.queryIntentActivities(intent,
 				PackageManager.GET_ACTIVITIES);
-		// Intent il[] = new Intent[infoList.size()];
 		List<ShareIntent> si = new ArrayList<ShareIntent>();
 
 		// ComponentName cname = getComponentName();//new ComponentName(this,
@@ -1234,6 +1199,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			((BorderEf) mActiveEffect).setCircle(item.isChecked());
 			break;
 		case R.id.draw:
+			final MenuItem menuitem = item;
 			LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 			final View view = inflater.inflate(R.layout.draw_dialog, null,
 					false);
@@ -1255,6 +1221,14 @@ public class MainActivity extends Activity implements OnTouchListener {
 			// m.setRectToRect(new RectF(0, 0, 72, 72), new RectF(0, 0, sq_side,
 			// sq_side), Matrix.ScaleToFit.CENTER);
 
+			// int col = ((BorderEf) mActiveEffect).getColor();
+			// Log.e("qweqwe", "" + Color.alpha(Color.WHITE));
+			// if (Color.alpha(col) == 0) {
+			// col = Color.rgb(Color.red(col), Color.green(col),
+			// Color.blue(col));
+			// col = (col & 0x00FFFFFF) | 0xFF000000;
+			// }
+
 			final Paint p = new Paint() {
 				{
 					setAntiAlias(true);
@@ -1265,8 +1239,47 @@ public class MainActivity extends Activity implements OnTouchListener {
 				}
 			};
 
-			Bitmap draw_bitmap = Bitmap.createBitmap(400, 400,
-					Bitmap.Config.ARGB_8888);
+			if (p.getAlpha() == 0)
+				p.setAlpha(255);
+			// view.findViewById(R.id.ll).setBackgroundColor(p.getColor());
+
+			final ImageView iv = (ImageView) view.findViewById(R.id.colorimage);
+			iv.setImageDrawable(ColorPref.getDrawable(p.getColor()));
+			iv.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					ColorPickerView.setBackColor(p.getColor());
+					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+					View view = inflater.inflate(R.layout.color_pref_dialog,
+							null, false);
+					final ColorPickerView cpv = (ColorPickerView) view
+							.findViewById(R.id.ColorPickerView);
+					new AlertDialog.Builder(mContext)
+							.setView(view)
+							.setPositiveButton(android.R.string.yes,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int whichButton) {
+											p.setColor(cpv.getColor());
+											iv.setImageDrawable(ColorPref
+													.getDrawable(p.getColor()));
+										}
+									})
+							.setNegativeButton(android.R.string.no, null)
+							.show();
+				}
+			});
+			Bitmap draw_bitmap;
+			if (menuitem.isChecked()) {
+				shouldDraw.setChecked(true);
+				draw_bitmap = ((BorderEf) mActiveEffect).getBitmapPoint();
+			} else {
+				draw_bitmap = Bitmap.createBitmap(BorderEf.BWIDTH,
+						BorderEf.BWIDTH, Bitmap.Config.ARGB_8888);
+			}
+			image.setImageBitmap(draw_bitmap);
 			final Canvas canvas = new Canvas(draw_bitmap);
 			shouldDraw
 					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -1356,14 +1369,19 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 			image.setImageBitmap(draw_bitmap);
 			// image.setImageMatrix(m);
-
 			image.setOnTouchListener(new OnTouchListener() {
+
+				boolean b = true;
+				float sc = 1;
 
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
-					canvas.drawCircle(event.getX(), event.getY(),
-							p.getStrokeWidth(), p);// Point(event.getX(),
-													// event.getY(), p);
+					if (b) {
+						sc = (float) BorderEf.BWIDTH / image.getWidth();
+						b = false;
+					}
+					canvas.drawCircle(event.getX() * sc, event.getY() * sc,
+							p.getStrokeWidth(), p);
 					v.invalidate();
 					return true;
 				}
@@ -1386,6 +1404,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 										((BorderEf) mActiveEffect)
 												.setBitmapPoint(null, 0);
 									}
+									menuitem.setChecked(shouldDraw.isChecked());
 									mActiveEffect.invalidate();
 								}
 							}).setNegativeButton(android.R.string.no, null)

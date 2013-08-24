@@ -20,6 +20,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.EmbossMaskFilter;
 import android.graphics.MaskFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
@@ -52,61 +53,43 @@ public class BorderEf extends Effect implements
 		return mBackgroundColor;
 	}
 
-	// private long i1;
-	// public int index;
-	public static final int OFFSET = -36;
 	public static final int WIDTH = 72;
+	public static final int OFFSET = -36;
 	public static final String BPOINT_NAME = "bpoint.png";
-	private Paint mPaint, mBitmapPaint;// , mTextPaint;
+	private Paint mPaint, mBitmapPaint, mDrawPaint;
 	private MaskFilter mEmboss;
 	private MaskFilter mBlur;
 	private int mColor;
 	private static int sColor = 0xFF7777FF;
 	private static float sStrokeWidth = 4;
-	// private int mBckgrWidth = 100, mBckgrHeight = 100;
 	private float mStrokeWidth;
 	private boolean isRainbow = false;
-	// private static FrameLayout mRainbowFrame;
 	private boolean adjustRainbow = false;
 	private boolean isBlur = false;
 	private boolean isNone = false;
 	private float mCenterRainbowX;
 	private float mCenterRainbowY;
 	private float[] rainbow;
-	// public static final int HATCH_COLOR_BG = 0xFF222222;
-	// public static final int HATCH_COLOR_LINES = 0xFF888888;
 	static final int SELECT_FOLDER = 1;
 	private int mMode1;
 	private int mMode2;
 	private final static int PADX = 0;
 	private final static int PADX2 = 2 * PADX;
-	// private static boolean isJPG;
 	private int mBackgroundColor = -1;
-	// private static SharedPreferences preferences;
 	int[] mColors = new int[] { 0xFFFF0000, 0xFFFF00FF, 0xFF0000FF, 0xFF00FFFF,
 			0xFF00FF00, 0xFFFFFF00, 0xFFFF0000 };
-	// private static TextView sInfo;
-	// private FilenameFilter mFilenameFilter;
-	// private static volatile boolean mustStop = false;
 	private boolean mustFit = true;
 	private boolean mustClip = false;
 	private float mDx = 20, mDy = 20;
 	private float mStartX = 10, mStartY = 10, mSmooth = 5;
 	private boolean isCircle = false;
-	// private int mNumWaves = 10;
-	// private static boolean shouldDrawText = false;
-	// private float[] dt = new float[] { 0, 0 };
-	// private boolean adjustTextPosition = false;
-	// private float pathLength = 0;
-	// private float currentLength = 0;
-	// private static String sText = "";
-	// private static boolean fillWithText = false;
-	// private static Typeface font;
 	private WaveSettingsLayout sd;
 	private float[] mFitted = new float[6];
 	private Drawable d1, d2;
 	private Bitmap bpoint;
 	private int frequency;
+	public static final double RAD = 180.0 / Math.PI;
+	public static final int BWIDTH = 400;
 
 	public BorderEf(Context ctx) {
 		this(ctx, Color.WHITE, 0, 0, sStrokeWidth, null);
@@ -182,12 +165,7 @@ public class BorderEf extends Effect implements
 		// }
 		// };
 
-		// mTextPaint = new Paint() {
-		// {
-		// setAntiAlias(true);
-		// setTextSize(mStrokeWidth);
-		// }
-		// };
+		mDrawPaint = new Paint();
 
 		mBitmapPaint = new Paint(Paint.DITHER_FLAG);
 
@@ -439,7 +417,6 @@ public class BorderEf extends Effect implements
 				return null;
 			}
 			// catch (NullPointerException e) {
-			// // Log.e("qwe123", "" + index);
 			// return ma.getResultBitmap();
 			// }
 			Canvas canvas = new Canvas(bitmap2);
@@ -481,14 +458,23 @@ public class BorderEf extends Effect implements
 			canvas.drawPath(path, paint);
 
 			if (bpoint != null) {
-				Paint pt = new Paint();
 				PathMeasure pm = new PathMeasure(path, false);
-				float coord[] = { 0, 0 };
+				float coord[] = new float[2];
+				float tan[] = new float[2];
+
 				float l = pm.getLength() / frequency;
-				canvas.translate(OFFSET, OFFSET);
+
+				// canvas.translate(OFFSET, OFFSET);
 				for (int i = 0; i < frequency; i++) {
-					pm.getPosTan(l * i, coord, null);
-					canvas.drawBitmap(bpoint, coord[0], coord[1], pt);
+					pm.getPosTan(l * i, coord, tan);
+					Matrix matrix = new Matrix();
+					matrix.postTranslate(coord[0] + OFFSET, coord[1] + OFFSET);
+					matrix.postRotate(
+							(float) (RAD * Math.atan2(tan[1], tan[0])),
+							coord[0], coord[1]);
+
+					canvas.drawBitmap(bpoint, matrix, mDrawPaint);
+					// canvas.drawBitmap(bpoint, coord[0], coord[1], pt);
 				}
 			}
 
@@ -1039,6 +1025,13 @@ public class BorderEf extends Effect implements
 		}
 	}
 
+	public Bitmap getBitmapPoint() {
+		if (bpoint == null)
+			return null;
+		Bitmap bp = Bitmap.createScaledBitmap(bpoint, BWIDTH, BWIDTH, false);
+		return bp;
+	}
+
 	private static class SavedEffect implements Serializable {
 
 		private int lindex;
@@ -1090,7 +1083,6 @@ public class BorderEf extends Effect implements
 	@Override
 	protected void save(File folder) {
 		File f = new File(folder, index + ":" + getClass().getName());
-		// Log.e("class", f.getAbsolutePath());
 		SavedEffect se = new SavedEffect(this);
 		try {
 			// FileOutputStream fileOut = new FileOutputStream(f);
@@ -1131,7 +1123,6 @@ public class BorderEf extends Effect implements
 	@Override
 	protected boolean load(File serialized) {
 		// File f = new File(folder, index + getClass().getName());
-		// Log.e("class", f.getAbsolutePath());
 		// SavedEffect se = new SavedEffect();
 		SavedEffect se = null;
 		try {

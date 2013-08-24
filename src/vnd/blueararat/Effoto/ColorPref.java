@@ -2,6 +2,7 @@ package vnd.blueararat.Effoto;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.preference.DialogPreference;
@@ -13,7 +14,7 @@ public class ColorPref extends DialogPreference {
 
 	private ColorPickerView mColorPickerView;
 
-	private int mColor;
+	private int mColor = 0xFFFFFFFF;
 	private ImageView mImageView;
 
 	public ColorPref(Context context, AttributeSet attrs) {
@@ -25,7 +26,7 @@ public class ColorPref extends DialogPreference {
 	protected void onBindView(View view) {
 		super.onBindView(view);
 		mImageView = (ImageView) view.findViewById(R.id.ImageView);
-		mImageView.setImageDrawable(getDrawable());
+		mImageView.setImageDrawable(getDrawable(mColor));
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class ColorPref extends DialogPreference {
 			int value = mColorPickerView.getColor();
 			if (callChangeListener(value)) {
 				setColor(value);
-				mImageView.setImageDrawable(getDrawable());
+				mImageView.setImageDrawable(getDrawable(mColor));
 			}
 		}
 	}
@@ -60,7 +61,7 @@ public class ColorPref extends DialogPreference {
 
 	@Override
 	protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-		setColor(restoreValue ? getPersistedInt(mColor)
+		setColor(restoreValue ? getPersistedInt(Color.WHITE)
 				: (Integer) defaultValue);
 	}
 
@@ -75,8 +76,8 @@ public class ColorPref extends DialogPreference {
 		mColor = color;
 
 		persistInt(color);
-		setSummary("ARGB: #"+Integer.toHexString(color).toUpperCase());
-		//BorderEf.sBackgroundColor = mColor;
+		setSummary("ARGB: #" + Integer.toHexString(color).toUpperCase());
+		// BorderEf.sBackgroundColor = mColor;
 		final boolean isBlocking = shouldDisableDependents();
 		if (isBlocking != wasBlocking) {
 			notifyDependencyChange(isBlocking);
@@ -87,8 +88,8 @@ public class ColorPref extends DialogPreference {
 		return mColor;
 	}
 
-	private Drawable getDrawable() {
-		PaintDrawable drawable = new PaintDrawable(mColor);
+	public static Drawable getDrawable(int color) {
+		PaintDrawable drawable = new PaintDrawable(color);
 		drawable.setIntrinsicHeight(32);
 		drawable.setIntrinsicWidth(32);
 		drawable.setCornerRadius(4);

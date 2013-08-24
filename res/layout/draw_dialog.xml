@@ -21,20 +21,34 @@
             android:background="@drawable/backgd" />
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/should_draw"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/ll"
-        android:text="@string/shoulddraw" />
+        android:gravity="center_vertical" >
+
+        <CheckBox
+            android:id="@+id/should_draw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/draw" />
+
+        <ImageView
+            android:id="@+id/colorimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ll2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/should_draw"
+        android:layout_below="@+id/ll1"
         android:gravity="center_vertical" >
 
         <TextView
