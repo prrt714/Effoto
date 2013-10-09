@@ -12,7 +12,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -45,6 +44,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.ShareCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.util.FloatMath;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -73,7 +73,7 @@ import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnTouchListener {
+public class MainActivity extends ActionBarActivity implements OnTouchListener {
 	public String getFilePath() {
 		return mFilePath;
 	}

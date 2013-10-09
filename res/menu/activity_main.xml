@@ -1,16 +1,17 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:p="http://schemas.android.com/apk/res-auto" >
 
     <item
         android:id="@+id/menu_settings"
         android:icon="@android:drawable/ic_menu_preferences"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/menu_settings"/>
+        android:title="@string/menu_settings"
+        p:showAsAction="never"/>
     <item
         android:id="@+id/open"
         android:icon="@android:drawable/ic_menu_gallery"
-        android:showAsAction="always"
-        android:title="@string/open"/>
+        android:title="@string/open"
+        p:showAsAction="always"/>
     <item
         android:id="@+id/menu_save_eff"
         android:icon="@android:drawable/ic_menu_save"
@@ -18,13 +19,13 @@
     <item
         android:id="@+id/menu_load_eff"
         android:icon="@android:drawable/ic_menu_recent_history"
-        android:showAsAction="ifRoom"
-        android:title="@string/load_effect"/>
+        android:title="@string/load_effect"
+        p:showAsAction="ifRoom"/>
     <item
         android:id="@+id/menu_item_share"
         android:icon="@android:drawable/ic_menu_share"
-        android:showAsAction="always"
-        android:title="@string/share"/>
+        android:title="@string/share"
+        p:showAsAction="always"/>
     <item
         android:id="@+id/fit"
         android:checkable="true"
