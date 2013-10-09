@@ -1579,11 +1579,12 @@ public class MainActivity extends Activity implements OnTouchListener {
 			mAddEffectListView = new ListView(this);
 			List<EffectEntry> si = new ArrayList<EffectEntry>();
 
+			si.add(new EffectEntry(getString(R.string.waves), BorderEf.class,
+					getResources().getDrawable(R.drawable.bt_border)));
 			si.add(new EffectEntry(getString(R.string.circles),
 					CirclesEf.class, getResources().getDrawable(
 							R.drawable.bt_circles)));
-			si.add(new EffectEntry(getString(R.string.waves), BorderEf.class,
-					getResources().getDrawable(R.drawable.bt_border)));
+
 			mAddEffectListView.setPadding(4, 8, 4, 4);
 			mAddEffectListView.setAdapter(new ArrayAdapter<EffectEntry>(this,
 					R.layout.simple_list_item_single_choice, si) {

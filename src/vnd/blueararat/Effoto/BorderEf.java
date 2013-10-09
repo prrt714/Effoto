@@ -108,13 +108,7 @@ public class BorderEf extends Effect implements
 			this.mMode2 = mode2;
 			this.mStrokeWidth = strokewidth;
 
-			// if (sBackgroundColor == -1) {
 			mBackgroundColor = ma.prefs.getInt(Prefs.KEY_COLOR, 0xFFFFFFFF);
-			// mTextPaint.setColor(mBackgroundColor);
-			// if (font != null)
-			// mTextPaint.setTypeface(font);
-			// mv.updateTextBounds();
-			// }
 
 			mDx = 10 + MTRNGJNILib.randInt(20);
 			mDy = 10 + MTRNGJNILib.randInt(20);
@@ -124,13 +118,11 @@ public class BorderEf extends Effect implements
 			mStartX = 10;
 			mStartY = 10;
 			mSmooth = 5 - MTRNGJNILib.randInt(10);
-			// mNumWaves = 5 + MTRNGJNILib.randInt(10);
 
 			float[] f = new float[3];
 			Color.colorToHSV(sColor, f);
 
 			f[0] = 360.f * MTRNGJNILib.randExc();// (float) Math.random();
-			// Toast.makeText(mContext, "" + f[0], 0).show();
 			mColor = Color.HSVToColor(Color.alpha(sColor), f);
 			sColor = mColor;
 
@@ -156,15 +148,6 @@ public class BorderEf extends Effect implements
 			}
 		};
 
-		// mPaint5 = new Paint() {
-		// {
-		// setStrokeWidth(1);
-		// setColor(HATCH_COLOR_LINES);
-		// setStyle(Paint.Style.STROKE);
-		// setAntiAlias(true);
-		// }
-		// };
-
 		mDrawPaint = new Paint();
 
 		mBitmapPaint = new Paint(Paint.DITHER_FLAG);
@@ -174,21 +157,12 @@ public class BorderEf extends Effect implements
 		mBlur = new BlurMaskFilter(mStrokeWidth != 0 ? mStrokeWidth : 1,
 				BlurMaskFilter.Blur.NORMAL);
 
-		// if (sText.length() == 0)
-		// sText = ma.getString(R.string.edit_text);
-		// if (mRainbowFrame == null) {
-		// mRainbowFrame = (FrameLayout)ma.findViewById(R.id.frame_rainbow);
-		// mRainbowFrame.setBackgroundDrawable(getDrawable());
-		// }
-		// ib.setPadding(2, 2, 2, 2);
-		// ib.setImageResource(R.drawable.bt_border);
 		d1 = mContext.getResources().getDrawable(R.drawable.bt_border_normal)
 				.mutate();
 		d2 = mContext.getResources().getDrawable(R.drawable.bt_border_pressed)
 				.mutate();
 		setHue(d1);
 		setHue(d2);
-		// ib.setImageDrawable(d1);
 
 		LayoutInflater inflater = LayoutInflater.from(ctx);
 		View v = inflater.inflate(R.layout.sliding_drawer_2,
@@ -208,53 +182,20 @@ public class BorderEf extends Effect implements
 	}
 
 	private class Draw extends AsyncTask<Void, Void, Void> {
-		private int total = 0;
-		// private Bitmap.Config mG;
-		private Bitmap.CompressFormat mCf;
-		private int mQ;
-		private float strwidth;
-		private Paint paint = new Paint(mPaint);
-		private volatile float scaleX, scaleY;
+		private final Paint paint = new Paint(mPaint);
 		private final float lStrokeWidth = mStrokeWidth;
 		private final float lDx = mDx;
 		private final float lDy = mDy;
-		private final float lCenterRainbowX = mCenterRainbowX;
-		private final float lCenterRainbowY = mCenterRainbowY;
-		// private final String lOutputPath = sOutputPath;
-		private final float lStartX = mStartX;
-		private final float lStartY = mStartY;
-		private final float lBitmapWidth = mBitmapWidth;
-		private final float lBitmapHeight = mBitmapHeight;
+		private float lStartX = mStartX;
+		private float lStartY = mStartY;
 		private final float lSmooth = mSmooth;
 		private final boolean lBlur = isBlur;
-		private final boolean lEmboss = false;// (sMode1 ==
-												// SettingsDialog.EMBOSS);
 		private final boolean lNone = isNone;
-		private final boolean lRainbow = isRainbow;
 		private final boolean lFit = mustFit;
-		// private final boolean isPNG = MainActivity.isPNG;
 		private final int lBackgroundColor = mBackgroundColor;
 		private final boolean lCircle = isCircle;
-		private final int lNumWaves = 2 * (int) ((lBitmapWidth + lBitmapHeight) / lDy);;
+		private final int lNumWaves = 2 * (int) ((mBitmapWidth + mBitmapHeight) / lDy);;
 		double dangle = 2 * Math.PI / lNumWaves;
-
-		// private final Paint lTextPaint = new Paint(mTextPaint);
-		// private final String lText = sText;
-		// private final boolean lShouldDrawText = shouldDrawText;
-		// private final float lPathLength = pathLength;
-		// private float pLength, cLength;
-		// private final float lCurrentLength = currentLength;
-		// private final boolean lFillWithText = fillWithText;
-		// private float ladj1;
-		// private int ltw;
-
-		// private void lUpdateTextBounds() {
-		// Rect bounds = new Rect();
-		// lTextPaint.getTextBounds(sText + "...", 0, sText.length() + 3,
-		// bounds);
-		// ltw = bounds.right;
-		// ladj1 = -(bounds.bottom + bounds.top) / 2;
-		// }
 
 		@Override
 		protected Void doInBackground(Void... params) {
@@ -262,53 +203,29 @@ public class BorderEf extends Effect implements
 			iAmLocked = true;
 			bmp3 = drawIntoBitmap();
 			return null;
-			// return export();
 		}
 
 		private synchronized Path drawFrameExport(Bitmap bitmap) {
 			int width = bitmap.getWidth();
 			int height = bitmap.getHeight();
 
-			scaleX = 1;// (float) width / lBitmapWidth;
-			scaleY = 1;// (float) height / lBitmapHeight;
-
-			float startX, startY, dx, dy, smooth;
-
-			// if (lCircle) {
-			float scale = 1;// Math.min(width, height)
-			// / Math.min(lBitmapWidth, lBitmapHeight);
-			startX = lStartX * scaleX;
-			startY = lStartY * scaleY;
-			dx = lDx * scale;
-			dy = lDy * scale;
-			smooth = lSmooth * scale;
-			strwidth = lStrokeWidth * scale;
-			// } else {
-			// startX = lStartX * scaleY;
-			// startY = lStartY * scaleY;
-			// dx = lDx * scaleY;
-			// dy = lDy * scaleY;
-			// smooth = lSmooth * scaleY;
-			// strwidth = lStrokeWidth * scaleY;
-			// }
-
 			int numberOfWavesX, numberOfWavesY;
 			float dx2, dy2;
 
 			Path path = new Path();
 
-			float j = dx;
+			float j = lDx;
 			if (lCircle) {
-				float adj = j + adjust(lNone, lBlur, strwidth);
+				float adj = j + adjust(lNone, lBlur, lStrokeWidth);
 				float cX = width / 2;
 				float cY = height / 2;
 				float radius = Math.min(cX, cY) - adj;
 				float x = Math.max(j, j + cX - cY) + adj;
 
 				if (!lFit) {
-					cX += startX;
-					cY += startY;
-					x += startX;
+					cX += lStartX;
+					cY += lStartY;
+					x += lStartX;
 				}
 
 				float y = cY;
@@ -319,68 +236,68 @@ public class BorderEf extends Effect implements
 				float sin = (float) Math.sin(ang);
 				float x1, x2, y1, y2;
 				for (int n = 0; n < lNumWaves; n++) {
-					x1 = x + smooth * sin;
-					y1 = y + smooth * cos;
+					x1 = x + lSmooth * sin;
+					y1 = y + lSmooth * cos;
 					ang += dangle;
 					cos = (float) Math.cos(ang);
 					sin = (float) Math.sin(ang);
 					x = cX - (radius + j) * cos;
 					y = cY + (radius + j) * sin;
-					x2 = x - smooth * sin;
-					y2 = y - smooth * cos;
+					x2 = x - lSmooth * sin;
+					y2 = y - lSmooth * cos;
 					path.cubicTo(x1, y1, x2, y2, x, y);
 					j = -j;
 				}
 				path.close();
 			} else {
 				if (lFit) {
-					mFitted = fitPath(width, height, dx, dy, smooth, startX,
-							startY, strwidth, lNone, lBlur);
-					startX = mFitted[0];
-					startY = mFitted[1];
+					mFitted = fitPath(width, height, lDx, lDy, lSmooth,
+							lStartX, lStartY, lStrokeWidth, lNone, lBlur);
+					lStartX = mFitted[0];
+					lStartY = mFitted[1];
 					dx2 = mFitted[2];
 					dy2 = mFitted[3];
 					numberOfWavesX = (int) mFitted[4];
 					numberOfWavesY = (int) mFitted[5];
 				} else {
-					numberOfWavesX = (int) ((width - startX * 2) / dy);
-					numberOfWavesY = (int) ((height - startY * 2) / dy);
+					numberOfWavesX = (int) ((width - lStartX * 2) / lDy);
+					numberOfWavesY = (int) ((height - lStartY * 2) / lDy);
 					if (numberOfWavesX % 2 == 0) {
 						numberOfWavesX--;
 					}
 					if (numberOfWavesY % 2 == 0) {
 						numberOfWavesY--;
 					}
-					dx2 = ((float) width - startX * 2) / numberOfWavesX;
-					dy2 = ((float) height - startY * 2) / numberOfWavesY;
+					dx2 = ((float) width - lStartX * 2) / numberOfWavesX;
+					dy2 = ((float) height - lStartY * 2) / numberOfWavesY;
 				}
 
-				float x = startX;
-				float y = startY;
-				path.moveTo(startX, startY);
+				float x = lStartX;
+				float y = lStartY;
+				path.moveTo(lStartX, lStartY);
 				for (int n = 1; n <= numberOfWavesY; n++) {
 					y += dy2;
-					path.cubicTo(x - j, y - dy2 / 2 - smooth, x - j, y - dy2
-							/ 2 + smooth, x, y);
+					path.cubicTo(x - j, y - dy2 / 2 - lSmooth, x - j, y - dy2
+							/ 2 + lSmooth, x, y);
 					j = -j;
 				}
 				for (int n = 1; n <= numberOfWavesX; n++) {
 					x += dx2;
-					path.cubicTo(x - dx2 / 2 - smooth, y - j, x - dx2 / 2
-							+ smooth, y - j, x, y);
+					path.cubicTo(x - dx2 / 2 - lSmooth, y - j, x - dx2 / 2
+							+ lSmooth, y - j, x, y);
 					j = -j;
 				}
 				j = -j;
 				for (int n = 1; n <= numberOfWavesY; n++) {
 					y -= dy2;
-					path.cubicTo(x - j, y + dy2 / 2 + smooth, x - j, y + dy2
-							/ 2 - smooth, x, y);
+					path.cubicTo(x - j, y + dy2 / 2 + lSmooth, x - j, y + dy2
+							/ 2 - lSmooth, x, y);
 					j = -j;
 				}
 				for (int n = 1; n <= numberOfWavesX; n++) {
 					x -= dx2;
-					path.cubicTo(x + dx2 / 2 + smooth, y - j, x + dx2 / 2
-							- smooth, y - j, x, y);
+					path.cubicTo(x + dx2 / 2 + lSmooth, y - j, x + dx2 / 2
+							- lSmooth, y - j, x, y);
 					j = -j;
 				}
 				path.close();
@@ -395,30 +312,20 @@ public class BorderEf extends Effect implements
 			} else {
 				g = Bitmap.Config.RGB_565;
 			}
-			// boolean b = true;
 			Bitmap bitmap = bmp1;
 			Bitmap bitmap2 = null;
-			// while (b) {
 			try {
 				bitmap2 = Bitmap.createBitmap(bitmap.getWidth(),
 						bitmap.getHeight(), g);
-				// b = false;
 			} catch (OutOfMemoryError e) {
 				e.printStackTrace();
-				// b = false;
 				if (opts.inSampleSize < 2)
 					opts.inSampleSize = 2;
 				else
 					opts.inSampleSize++;
-				// bitmap = null;
-				// bitmap2 = null;
-				// System.gc();
 				iAmLocked = false;
 				return null;
 			}
-			// catch (NullPointerException e) {
-			// return ma.getResultBitmap();
-			// }
 			Canvas canvas = new Canvas(bitmap2);
 			if (!MainActivity.isPNG)
 				canvas.drawColor(lBackgroundColor);
@@ -427,29 +334,9 @@ public class BorderEf extends Effect implements
 			if (mustClip)
 				canvas.clipPath(path);
 			canvas.drawBitmap(bitmap, 0, 0, mBitmapPaint);
-			// bitmap.recycle();
-			// System.gc();
-			// System.gc();
-
-			paint.setStrokeWidth(strwidth);
-			if (lRainbow) {
-				float x = lCenterRainbowX;
-				float y = lCenterRainbowY;
-				Shader s = new SweepGradient(x, y, mColors, null);
-				paint.setShader(s);
-			}
-			if (lBlur) {
-				MaskFilter blur = new BlurMaskFilter(strwidth,
-						BlurMaskFilter.Blur.NORMAL);
-				paint.setMaskFilter(blur);
-			} else if (lEmboss) {
-				MaskFilter emboss = new EmbossMaskFilter(
-						new float[] { 1, 1, 1 }, 0.4f, 6, 3.5f * scaleY);
-				paint.setMaskFilter(emboss);
-			}
 
 			if (!lFit && lStartX == 0 && lStartY == 0 && !lCircle) {
-				float p = strwidth / 2;
+				float p = lStrokeWidth / 2;
 				canvas.drawRect(p, p, bitmap.getWidth() - p, bitmap.getHeight()
 						- p, paint);
 			}
@@ -464,7 +351,6 @@ public class BorderEf extends Effect implements
 
 				float l = pm.getLength() / frequency;
 
-				// canvas.translate(OFFSET, OFFSET);
 				for (int i = 0; i < frequency; i++) {
 					pm.getPosTan(l * i, coord, tan);
 					Matrix matrix = new Matrix();
@@ -474,28 +360,8 @@ public class BorderEf extends Effect implements
 							coord[0], coord[1]);
 
 					canvas.drawBitmap(bpoint, matrix, mDrawPaint);
-					// canvas.drawBitmap(bpoint, coord[0], coord[1], pt);
 				}
 			}
-
-			// if (lShouldDrawText) {
-			// PathMeasure pm = new PathMeasure(path, true);
-			// pLength = pm.getLength();
-			// cLength = pLength * lCurrentLength / lPathLength;
-			// lTextPaint.setTextSize(strwidth);
-			// lUpdateTextBounds();
-			//
-			// if (lFillWithText) {
-			// int count = (int) pLength / ltw;
-			// for (int i = 0; i < count; i++) {
-			// canvas.drawTextOnPath(sText, path, cLength + i * ltw,
-			// ladj1, lTextPaint);
-			// }
-			// } else {
-			// canvas.drawTextOnPath(sText, path, cLength, ladj1,
-			// lTextPaint);
-			// }
-			// }
 
 			if (isCircle && lFit) {
 				int l = 0, u = 0, dr;
@@ -525,12 +391,8 @@ public class BorderEf extends Effect implements
 
 			if (isMoving) {
 				ma.updateMoving(bmp3);
-				// bmp3 = null;
-				// System.gc();
 				isLocked = false;
 				iAmLocked = false;
-				// ma.update(bmp3, ma.index + 1);
-				// mImageView.setImageBitmap(bmp3);
 			} else {
 				isLocked = false;
 				iAmLocked = false;
@@ -538,26 +400,8 @@ public class BorderEf extends Effect implements
 				if (!iAmLocked)
 					freeMemory();
 			}
-			// Toast.makeText(ma, result, Toast.LENGTH_SHORT).show();
 		}
-		// @Override
-		// protected void onPreExecute() {
-		// }
-
-		// @Override
-		// protected void onProgressUpdate(Void... v) {
-		//
-		// }
 	}
-
-	// @Override
-	// public void setBitmap(Bitmap bmp1) {
-	// super.setBitmap(bmp1);
-	// if (!iAmLocked) {
-	// mCenterRainbowX = mBitmapWidth / 2;
-	// mCenterRainbowY = mBitmapHeight / 2;
-	// }
-	// }
 
 	@Override
 	public void rescale(float scale) {
@@ -586,30 +430,21 @@ public class BorderEf extends Effect implements
 	public void activate() {
 		super.activate();
 		ib.setImageDrawable(d2);
-		// ib.setImageResource(R.drawable.bt_border_pressed);
 	}
 
 	@Override
 	public void deactivate() {
 		super.deactivate();
 		ib.setImageDrawable(d1);
-		// ib.setImageResource(R.drawable.bt_border);
 	}
 
-	// private Bitmap mBitmap;
-	// private float mDy2, mDx2;
 	private int tw;
 	private float mX, mY, adj1;
 	float sD, sMx, sMy, mSmoothInitial;// = 5;
 
-	// private int mRainbowD = PADX;
-	// private float mAdjusted;
-	// private Paint mDotPaint = new Paint();
-
 	public boolean onTouchEvent(MotionEvent event) {
 		int action = event.getActionMasked();
 		int P = event.getPointerCount();
-		// int N = event.getHistorySize();
 		if (action != MotionEvent.ACTION_MOVE) {
 			if (action == MotionEvent.ACTION_DOWN) {
 				isMoving = true;
@@ -619,19 +454,10 @@ public class BorderEf extends Effect implements
 				isMoving = false;
 				if (CirclesEf.sOnlyBorderIndex > -1) {
 					sBorderWidth = ma.getMaxWaveHeight();
-					// isLocked = false;
 					ma.update(null, 0);
 				} else {
 					invalidate();
 				}
-				// if (adjustTextPosition) {
-				// adjustTextPosition = false;
-				// invalidate();
-				// return true;
-				// }
-				// invalidate();
-				// if (!isLocked)
-				// ma.update(bmp3, ma.index + 1);
 			}
 			if (action == MotionEvent.ACTION_POINTER_DOWN) {
 				if (P == 2) {
@@ -671,33 +497,6 @@ public class BorderEf extends Effect implements
 	}
 
 	private void touch_move(float x, float y) {
-		// if (adjustRainbow) {
-		// // mRainbowFrame.setX(x);
-		// // mRainbowFrame.setY(y);
-		// mCenterRainbowX = x - PADX;
-		// mCenterRainbowY = y - PADX;
-		// Shader s = new SweepGradient(2 * (mCenterRainbowX),// - mBitmapWidth
-		// // / 4.f),
-		// 2 * (mCenterRainbowY), mColors, null);// - mBitmapHeight /
-		// // 4.f), mColors,
-		// // null);
-		// mPaint.setShader(s);
-		// } else
-		// if (adjustTextPosition) {
-		// float dx = (x - mX);
-		// float dy = (y - mY);
-		// if (x > mBckgrWidth / 2 + PADX)
-		// dy = -dy;
-		// if (y < mBckgrHeight / 2 + PADX)
-		// dx = -dx;
-		// currentLength += dx + dy;
-		// if (currentLength > pathLength)
-		// currentLength = 0;
-		// else if (currentLength < 0)
-		// currentLength = pathLength;
-		// mX = x;
-		// mY = y;
-		// } else {
 		float dx = x - mX;
 		float dy = y - mY;
 		mDx = Math.abs(mDx + dx);
@@ -722,21 +521,7 @@ public class BorderEf extends Effect implements
 			if (adjustRainbow) {
 
 			}
-			// if (Math.abs(x - mCenterRainbowX - PADX) < mRainbowD
-			// && Math.abs(y - mCenterRainbowY - PADX) < mRainbowD) {
-			// adjustRainbow = true;
-			// } else {
-			// adjustRainbow = false;
-			// }
 		}
-		// if (shouldDrawText) {
-		// if (Math.abs(x - dt[0] - PADX) < 20
-		// && Math.abs(y - dt[1] - PADX) < 20) {
-		// adjustTextPosition = true;
-		// } else {
-		// adjustTextPosition = false;
-		// }
-		// }
 	}
 
 	private static float[] fitPath(float width, float height, float mDx,
@@ -798,8 +583,6 @@ public class BorderEf extends Effect implements
 	@Override
 	public void settingsChanged(int color, int mode1, int mode2,
 			float strokewidth, float rainbow[]) {
-		// if (adjustRainbow)
-		// adjustRainbow = false;
 		if (color != -1) {
 			sColor = color;
 			mColor = color;
@@ -825,8 +608,6 @@ public class BorderEf extends Effect implements
 		if (strokewidth != -1) {
 			sStrokeWidth = strokewidth;
 			mPaint.setStrokeWidth(strokewidth);
-			// mTextPaint.setTextSize(strokewidth);
-			// updateTextBounds();
 			if (strokewidth != 0)
 				mBlur = new BlurMaskFilter(strokewidth,
 						BlurMaskFilter.Blur.NORMAL);
@@ -841,17 +622,14 @@ public class BorderEf extends Effect implements
 			mMode2 = mode2;
 		switch (mode1) {
 		case WaveSettingsLayout.NORMAL:
-			// mPaint.setXfermode(null);
 			mPaint.setMaskFilter(null);
 			isBlur = false;
 			break;
 		case WaveSettingsLayout.BLUR:
-			// mPaint.setXfermode(null);
 			mPaint.setMaskFilter(mBlur);
 			isBlur = true;
 			break;
 		case WaveSettingsLayout.EMBOSS:
-			// mPaint.setXfermode(null);
 			mPaint.setMaskFilter(mEmboss);
 			isBlur = false;
 			break;
@@ -862,7 +640,6 @@ public class BorderEf extends Effect implements
 			mPaint.setXfermode(null);
 			mPaint.setShader(null);
 			isRainbow = false;
-			// mRainbowFrame.setVisibility(View.GONE);
 			isNone = false;
 			break;
 		case WaveSettingsLayout.RAINBOW:
@@ -871,7 +648,6 @@ public class BorderEf extends Effect implements
 				mCenterRainbowY = mBitmapHeight / 2;
 			}
 			sd.setRainbow(true);
-			// mRainbowFrame.setVisibility(View.VISIBLE);
 			mPaint.setXfermode(null);
 			if (!isRainbow) {
 				if (mColors[0] == mColors[2]) {
@@ -887,9 +663,7 @@ public class BorderEf extends Effect implements
 			break;
 		case WaveSettingsLayout.NONE:
 			sd.setRainbow(false);
-			// mPaint.setMaskFilter(null);
 			isRainbow = false;
-			// mRainbowFrame.setVisibility(View.GONE);
 			mPaint.setShader(null);
 			isNone = true;
 			if (!MainActivity.isPNG) {
@@ -924,18 +698,6 @@ public class BorderEf extends Effect implements
 		return mColor;
 	}
 
-	// private void updateTextBounds() {
-	// Rect bounds = new Rect();
-	// mTextPaint.getTextBounds(sText + "...", 0, sText.length() + 3, bounds);
-	// tw = bounds.right;
-	// adj1 = -(bounds.bottom + bounds.top) / 2;
-	// }
-
-	// @Override
-	// public String getString() {
-	// return "Waves";
-	// }
-
 	public void setFit(boolean mustFit) {
 		this.mustFit = mustFit;
 		invalidate();
@@ -961,10 +723,6 @@ public class BorderEf extends Effect implements
 		}
 	}
 
-	// public boolean getPostmark() {
-	// return (!isCircle && !mustFit && mStartX == 0 && mStartY == 0);
-	// }
-
 	public boolean getFit() {
 		return mustFit;
 	}
@@ -989,21 +747,10 @@ public class BorderEf extends Effect implements
 	private void setHue(Drawable drawable) {
 		if (drawable == null)
 			return;
-		// Drawable d =
-		// mContext.getResources().getDrawable(R.drawable.bt_border);
-		// Bitmap b = Bitmap.createBitmap(d., height, config)
-		// Bitmap b = BitmapFactory.decodeResource(mContext.getResources(),
-		// R.drawable.bt_border);
-		// Paint p = new Paint(mPaint);
-		// p.set
-		// Canvas c = new Canvas(b.getWidth(),b.getHeight(),null);
-
 		final ColorMatrix matrixA = new ColorMatrix();
-		// making image B&W
 		matrixA.setSaturation(0);
 
 		final ColorMatrix matrixB = new ColorMatrix();
-		// applying scales for RGB color values
 
 		matrixB.setScale((float) Color.red(mColor) / 255,
 				(float) Color.green(mColor) / 255,
@@ -1126,8 +873,6 @@ public class BorderEf extends Effect implements
 
 	@Override
 	protected boolean load(File serialized) {
-		// File f = new File(folder, index + getClass().getName());
-		// SavedEffect se = new SavedEffect();
 		SavedEffect se = null;
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(
