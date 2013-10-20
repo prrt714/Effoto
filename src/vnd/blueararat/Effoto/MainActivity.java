@@ -74,9 +74,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements OnTouchListener {
-	public String getFilePath() {
-		return mFilePath;
-	}
 
 	private FrameLayout mShareFrame, mLoadFrame;
 
@@ -87,7 +84,6 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener {
 	private Uri mUri;
 	private File mResultFile;
 	private List<Effect> list = new ArrayList<Effect>();
-	private Effect mCurEffect;
 	public int index;
 	private RectF mViewRect;
 	private FilenameFilter mFilenameFilter;
