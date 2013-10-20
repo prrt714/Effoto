@@ -280,7 +280,10 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener {
 		if (bmp == null) {
 			// bmp = resultBitmap;
 			// index = 0;
-			update(bmp1, 0);
+			if (bmp1 != null) {
+				update(bmp1, 0);
+			} else
+				return;
 		} else if (j < list.size()) {
 			index = j;
 			// Toast.makeText(this, "" + list.size(), 0).show();
@@ -1974,15 +1977,22 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener {
 			if (resultCode == RESULT_OK) {
 				Uri imageUri = data.getData();
 				try {
-					// bmp1.recycle();
+					File file = getFileFromURI(imageUri);
+					mFileName = file.getName();
+					mFilePath = file.getAbsolutePath();
 					Effect.opts = new Options();
-					mFileName = getFileFromURI(imageUri).getName();
-					mFilePath = getFileFromURI(imageUri).getAbsolutePath();
-					// mImageView.setImageBitmap(null);
-					// bmp1 = null;
 					System.gc();
-					bmp1 = MediaStore.Images.Media.getBitmap(
-							getContentResolver(), imageUri);
+					try {
+						bmp1 = BitmapFactory.decodeStream((getContentResolver()
+								.openInputStream(imageUri)));
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+
+					// bmp1 = BitmapFactory.decodeFile(mFilePath);//
+					// loadBitmapFromUri(imageUri);
+					// MediaStore.Images.Media.getBitmap(
+					// getContentResolver(), imageUri);
 					if (list != null && list.size() > 0) {
 						// list.get(0).setBitmap(bmp1);
 						update(bmp1, 0);
@@ -1991,10 +2001,6 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener {
 						mImageView.setImageBitmap(bmp1);
 					}
 					OnSizeChanged(mViewRect);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
 				} catch (OutOfMemoryError e) {
 					if (Effect.opts.inSampleSize < 2)
 						Effect.opts.inSampleSize = 2;
@@ -2007,12 +2013,17 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener {
 	}
 
 	private File getFileFromURI(Uri uri) {
-		Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-		if (cursor == null)
+		if (uri.getScheme().equals("content")) {
+			Cursor cursor = getContentResolver().query(uri, null, null, null,
+					null);
+			cursor.moveToFirst();
+			int idx = cursor
+					.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+			return new File(cursor.getString(idx));
+		} else if (uri.getScheme().equals("file")) {
 			return new File(uri.getPath());
-		cursor.moveToFirst();
-		int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-		return new File(cursor.getString(idx));
+		} else
+			return null;
 	}
 
 	public static final void setViewGroupFont(ViewGroup mContainer,
