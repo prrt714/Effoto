@@ -555,9 +555,10 @@ public class CirclesEf extends Effect {
 			}
 			y += f3;
 		}
+		p.setMaskFilter(null);
 		
 		p.setAlpha(255);
-		
+
 		if (isOnlyBorder) {
 			// if (true) {
 			BitmapShader shader = new BitmapShader(bmp1, Shader.TileMode.CLAMP,
