@@ -74,7 +74,7 @@ public class BorderEf extends Effect implements
 	private int mMode1;
 	private int mMode2;
 	private final static int PADX = 0;
-	private final static int PADX2 = 2 * PADX;
+//	private final static int PADX2 = 2 * PADX;
 	private int mBackgroundColor = -1;
 	int[] mColors = new int[] { 0xFFFF0000, 0xFFFF00FF, 0xFF0000FF, 0xFF00FFFF,
 			0xFF00FF00, 0xFFFFFF00, 0xFFFF0000 };
@@ -785,6 +785,7 @@ public class BorderEf extends Effect implements
 
 	private static class SavedEffect implements Serializable {
 
+		private static final long serialVersionUID = 2752188990081894671L;
 		private int lindex;
 		private int lmBackgroundColor;
 		private int lmColor;

@@ -10,13 +10,15 @@ import java.io.Serializable;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -515,62 +517,15 @@ public class CirclesEf extends Effect {
 		p.setColorFilter(null);
 		p.setAlpha(255);
 
-		if (isOnlyBorder) {
-			Rect r1 = new Rect((int) sBorderWidth, (int) sBorderWidth,
-					(int) right, (int) bottom);
-			c.drawBitmap(bmp1, r1, r1, p);
-			// Path path = new Path();
-			// path.addRect(sBorderWidth, sBorderWidth, right, bottom,
-			// Direction.CCW);
-			// c.clipPath(path);
-		}
-		// p.setMaskFilter(null);
-
-		// if (isOnlyBorder) {
-		// Path path = new Path();
-		// path.addRect(sBorderWidth, sBorderWidth, right, bottom,
-		// Direction.CCW);
-		// c.clipPath(path);
-		// }
-
-		// float f3 = 0.15f / scale;
 		float x;
 		float y = 0;
 		int k = 0;
-		// p.setTextSize(f2);
-		// String[] text = new String[] { "T", "E", "X", "T" };
 
 		int length = bitmap.getWidth() * bitmap.getHeight();
 		int[] array = new int[length];
 		bitmap.getPixels(array, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(),
 				bitmap.getHeight());
-		// for (int i=0;i<length;i++){
-		// // If the bitmap is in ARGB_8888 format
-		// if (array[i] == 0xff000000){
-		// array[i] = 0xffffffff;
-		// } else if ...
-		// }
-
-		// float mx2[] = { 1.2f, 0f, 0f, 0.0f, 0f, 0f, 1.2f, 0f, 0f, 0f, 0f, 0f,
-		// 1.2f, 0.0f, 0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f };
-		// ColorMatrix cm2 = new ColorMatrix(mx2);
-
-		// p.setColorFilter(new ColorMatrixColorFilter(cm2));
-
-		// for (int i = 0; i < bitmap.getHeight(); i++) {
-		// x = 0;
-		// for (int j = 0; j < bitmap.getWidth(); j++) {
-		// p.setColor(array[k]);
-		// // p.setAlpha(125);
-		// // c.drawCircle(x, y, f, p);
-		// c.drawRect(x, y, x + f2, y + f2, p);
-		// x += f2;
-		// k++;
-		// }
-		// y += f2;
-		// }
 		k = 0;
-		// p.setColorFilter(null);
 		y = f20;
 
 		if (blur_radius > 0) {
@@ -578,11 +533,12 @@ public class CirclesEf extends Effect {
 					BlurMaskFilter.Blur.NORMAL);
 			p.setMaskFilter(Blur);
 		}
+		float y1 = sBorderWidth + radius, y2 = bottom - radius, x2 = right
+				- radius;
 		for (int i = 0; i < bh; i++) {
 			x = f20;
 			for (int j = 0; j < bw; j++) {
-				if (isOnlyBorder && (y > sBorderWidth && y < bottom)
-						&& (x > sBorderWidth && x < right)) {
+				if (isOnlyBorder && (y > y1 && y < y2) && (x > y1 && x < x2)) {
 					x += f2;
 					k++;
 					continue;
@@ -599,6 +555,22 @@ public class CirclesEf extends Effect {
 				k++;
 			}
 			y += f3;
+		}
+
+		if (isOnlyBorder) {
+			// if (true) {
+			BitmapShader shader = new BitmapShader(bmp1, Shader.TileMode.CLAMP,
+					Shader.TileMode.CLAMP);
+			p.setShader(shader);
+			RectF r1 = new RectF(sBorderWidth, sBorderWidth, right, bottom);
+			c.drawRoundRect(r1, radius, radius, p);
+			p.setShader(null);
+			// } else {
+			// Rect r1 = new Rect((int) sBorderWidth, (int) sBorderWidth,
+			// (int) right, (int) bottom);
+			// c.drawBitmap(bmp1, r1, r1, p);
+			// }
+
 		}
 	}
 
@@ -659,6 +631,8 @@ public class CirclesEf extends Effect {
 	}
 
 	private static class SavedEffect implements Serializable {
+
+		private static final long serialVersionUID = -2576726311705577506L;
 		// private int lindex;
 		private float lscale;
 		private float lradius;
