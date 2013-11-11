@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
@@ -58,6 +59,8 @@ public class CirclesEf extends Effect {
 	// public int index;
 	public boolean isOnlyBorder = true;
 	public static int sOnlyBorderIndex = -1;
+	public boolean isRounded = false;
+	public float corner_radius;
 
 	// private int mBitmapHeight, mBitmapWidth;
 
@@ -402,6 +405,15 @@ public class CirclesEf extends Effect {
 				});
 	}
 
+	void setRounded(boolean isRounded, float corner_radius) {
+		this.isRounded = isRounded;
+		if (isRounded)
+			this.corner_radius = corner_radius;
+		else {
+			this.corner_radius = 0;
+		}
+	}
+
 	class Draw extends AsyncTask<Bitmap, Void, Void> {
 
 		@Override
@@ -532,8 +544,8 @@ public class CirclesEf extends Effect {
 					BlurMaskFilter.Blur.NORMAL);
 			p.setMaskFilter(Blur);
 		}
-		float y1 = sBorderWidth + radius, y2 = bottom - radius, x2 = right
-				- radius;
+		float y1 = sBorderWidth + corner_radius, y2 = bottom - corner_radius, x2 = right
+				- corner_radius;
 		for (int i = 0; i < bh; i++) {
 			x = f20;
 			for (int j = 0; j < bw; j++) {
@@ -556,22 +568,22 @@ public class CirclesEf extends Effect {
 			y += f3;
 		}
 		p.setMaskFilter(null);
-		
+
 		p.setAlpha(255);
 
 		if (isOnlyBorder) {
-			// if (true) {
-			BitmapShader shader = new BitmapShader(bmp1, Shader.TileMode.CLAMP,
-					Shader.TileMode.CLAMP);
-			p.setShader(shader);
-			RectF r1 = new RectF(sBorderWidth, sBorderWidth, right, bottom);
-			c.drawRoundRect(r1, radius, radius, p);
-			p.setShader(null);
-			// } else {
-			// Rect r1 = new Rect((int) sBorderWidth, (int) sBorderWidth,
-			// (int) right, (int) bottom);
-			// c.drawBitmap(bmp1, r1, r1, p);
-			// }
+			if (isRounded) {
+				BitmapShader shader = new BitmapShader(bmp1,
+						Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+				p.setShader(shader);
+				RectF r1 = new RectF(sBorderWidth, sBorderWidth, right, bottom);
+				c.drawRoundRect(r1, corner_radius, corner_radius, p);
+				p.setShader(null);
+			} else {
+				Rect r1 = new Rect((int) sBorderWidth, (int) sBorderWidth,
+						(int) right, (int) bottom);
+				c.drawBitmap(bmp1, r1, r1, p);
+			}
 
 		}
 	}
@@ -648,6 +660,8 @@ public class CirclesEf extends Effect {
 		private boolean lisOnlyBorder;
 		private float lsBorderWidth;
 		private int lsOnlyBorderIndex;
+		private float lcorner_radius;
+		private boolean lisRounded;
 
 		// private int sOnlyBorderIndex = -1;
 		private SavedEffect(CirclesEf ef) {
@@ -664,6 +678,8 @@ public class CirclesEf extends Effect {
 			lisOnlyBorder = ef.isOnlyBorder;
 			lsBorderWidth = sBorderWidth;
 			lsOnlyBorderIndex = sOnlyBorderIndex;
+			lcorner_radius = ef.corner_radius;
+			lisRounded = ef.isRounded;
 		}
 	}
 
@@ -711,6 +727,9 @@ public class CirclesEf extends Effect {
 		isOnlyBorder = se.lisOnlyBorder;
 		sBorderWidth = se.lsBorderWidth;
 		sOnlyBorderIndex = se.lsOnlyBorderIndex;
+		corner_radius = se.lcorner_radius;
+		isRounded = se.lisRounded;
+
 		return true;
 	}
 

@@ -92,5 +92,6 @@
     <string name="frequency">How many</string>
     <string name="shoulddraw">Should Draw</string>
     <string name="draw">Draw</string>
-
+    <string name="rounded">Rounded corner</string>
+    
 </resources>

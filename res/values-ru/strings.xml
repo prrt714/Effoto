@@ -86,5 +86,6 @@
     <string name="frequency">Сколько</string>
     <string name="shoulddraw">Надо рисовать</string>
     <string name="draw">Рисуй</string>
-    
+    <string name="rounded">Закругленная рамка</string>
+
 </resources>

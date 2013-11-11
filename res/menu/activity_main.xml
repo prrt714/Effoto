@@ -49,5 +49,9 @@
         android:id="@+id/only_border"
         android:checkable="true"
         android:title="@string/only_border"/>
+    <item
+        android:id="@+id/rounded_corner"
+        android:checkable="true"
+        android:title="@string/rounded"/>
 
 </menu>

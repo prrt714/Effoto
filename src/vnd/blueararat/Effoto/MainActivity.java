@@ -1109,7 +1109,7 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener {
 			menu.findItem(R.id.postmark).setVisible(true);
 
 			menu.findItem(R.id.only_border).setVisible(false);
-
+			menu.findItem(R.id.rounded_corner).setVisible(false);
 		} else {
 			menu.findItem(R.id.fit).setVisible(false);
 			menu.findItem(R.id.circle).setVisible(false);
@@ -1117,13 +1117,18 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener {
 			menu.findItem(R.id.postmark).setVisible(false);
 			menu.findItem(R.id.clip).setVisible(false);
 			item = menu.findItem(R.id.only_border);
+			MenuItem item2 = menu.findItem(R.id.rounded_corner);
 
 			if (mActiveEffect instanceof CirclesEf && Effect.sBorderWidth > 0) {
 				CirclesEf ce = (CirclesEf) mActiveEffect;
 				item.setVisible(true);
+				item2.setVisible(true);
 				item.setChecked(ce.isOnlyBorder);
+				item2.setEnabled(ce.isOnlyBorder);
+				item2.setChecked(ce.isRounded);
 			} else {
 				item.setVisible(false);
+				item2.setVisible(false);
 			}
 
 		}
@@ -1423,6 +1428,74 @@ public class MainActivity extends ActionBarActivity implements OnTouchListener {
 			Effect.sBorderWidth = getMaxWaveHeight();
 			mActiveEffect.invalidate();
 			break;
+		case R.id.rounded_corner:
+			final CirclesEf ce = (CirclesEf) mActiveEffect;
+			final MenuItem menuitem2 = item;
+			LayoutInflater inflater2 = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+			final View view2 = inflater2.inflate(R.layout.rounded_corner, null,
+					false);
+			setViewGroupFont((LinearLayout) view2, Typeface.MONOSPACE);
+			final TextView tv = (TextView) view2.findViewById(R.id.radius_desc);
+			final SeekBar corner_radius = (SeekBar) view2
+					.findViewById(R.id.corner_radius);
+			final CheckBox chx_rounded = (CheckBox) view2
+					.findViewById(R.id.is_rounded);
+			chx_rounded.setChecked(ce.isRounded);
+			corner_radius.setEnabled(ce.isRounded);
+			if (ce.isRounded) {
+				tv.setText(getString(R.string.radius)
+						+ Integer.toString((int) ce.corner_radius) + " px");
+				corner_radius.setProgress((int) ce.corner_radius - 1);
+			}
+			chx_rounded
+					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+						@Override
+						public void onCheckedChanged(CompoundButton buttonView,
+								boolean isChecked) {
+							corner_radius.setEnabled(isChecked);
+							if (isChecked) {
+								tv.setText(getString(R.string.radius)
+										+ Integer.toString(corner_radius
+												.getProgress() + 1) + " px");
+							}
+						}
+					});
+
+			corner_radius
+					.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+						@Override
+						public void onStopTrackingTouch(SeekBar seekBar) {
+						}
+
+						@Override
+						public void onStartTrackingTouch(SeekBar seekBar) {
+						}
+
+						@Override
+						public void onProgressChanged(SeekBar seekBar,
+								int progress, boolean fromUser) {
+							tv.setText(getString(R.string.radius)
+									+ Integer.toString(progress + 1) + " px");
+						}
+					});
+			new AlertDialog.Builder(this)
+					.setView(view2)
+					.setPositiveButton(android.R.string.yes,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									menuitem2.setChecked(chx_rounded
+											.isChecked());
+									ce.setRounded(chx_rounded.isChecked(),
+											corner_radius.getProgress() + 1);
+									mActiveEffect.invalidate();
+								}
+							}).setNegativeButton(android.R.string.no, null)
+					.show();
+			break;
+
 		}
 		return true;
 	}
