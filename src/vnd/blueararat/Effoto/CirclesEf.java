@@ -515,7 +515,6 @@ public class CirclesEf extends Effect {
 
 		c.drawBitmap(bmp1, 0, 0, p);
 		p.setColorFilter(null);
-		p.setAlpha(255);
 
 		float x;
 		float y = 0;
@@ -556,7 +555,9 @@ public class CirclesEf extends Effect {
 			}
 			y += f3;
 		}
-
+		
+		p.setAlpha(255);
+		
 		if (isOnlyBorder) {
 			// if (true) {
 			BitmapShader shader = new BitmapShader(bmp1, Shader.TileMode.CLAMP,
