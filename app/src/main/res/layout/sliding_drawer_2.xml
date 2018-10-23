@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal" />
 
-    <!-- layout="vnd.blueararat.Efoto.WaveSettingsLayout" /> -->
+    <!-- layout="vnd.blueararat.Effoto.WaveSettingsLayout" /> -->
     <!--
          <LinearLayout
         android:id="@+id/content2"
@@ -31,7 +31,7 @@
         android:orientation="vertical"
         android:padding="8dip" >
 
-        <vnd.blueararat.Efoto.ColorPickerView
+        <vnd.blueararat.Effoto.ColorPickerView
             android:id="@+id/ColorPickerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

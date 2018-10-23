@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vnd.blueararat.Effoto.WrappingSlidingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:efoto="vnd.blueararat.Efoto"
+    xmlns:efoto="http://effoto.blueararat.vnd"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
@@ -31,7 +31,7 @@
             android:padding="2dp" >
 
             <!--
-                 <vnd.blueararat.Efoto.CustomToggleButton
+                 <vnd.blueararat.Effoto.CustomToggleButton
                 android:id="@+id/ef13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

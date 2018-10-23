@@ -10,7 +10,7 @@ public class WrappingSlidingDrawer extends SlidingDrawer {
 
 	private boolean mVertical;
 	private int mTopOffset;
-	private static final String ADDITIONAL = "vnd.blueararat.Efoto";
+	private static final String ADDITIONAL = "http://effoto.blueararat.vnd";
 	private int mAlign;
 
 	public WrappingSlidingDrawer(Context context, AttributeSet attrs) {

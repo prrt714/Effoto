@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class SeekbarPref extends Preference implements OnSeekBarChangeListener {
 
 	private static final String ANDROIDNS = "http://schemas.android.com/apk/res/android";
-	private static final String ADDITIONAL = "vnd.blueararat.Efoto";
+	private static final String ADDITIONAL = "http://effoto.blueararat.vnd";
 
 	private int mMin;
 	private int mMax;
