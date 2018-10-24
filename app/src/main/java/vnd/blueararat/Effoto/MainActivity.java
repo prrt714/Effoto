@@ -36,6 +36,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 				!= PackageManager.PERMISSION_GRANTED) {
 			ActivityCompat.requestPermissions(this,
 					new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -2028,7 +2029,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener {
 		bmp1.recycle();
 		System.gc();
 		if (mFilePath == null) {
-			bmp1 = BitmapFactory.decodeResource(getResources(), R.drawable.df,
+			bmp1 = BitmapFactory.decodeResource(getResources(), MainView.getImageResource(),
 					Effect.opts);
 		} else {
 			bmp1 = BitmapFactory.decodeFile(mFilePath, Effect.opts);

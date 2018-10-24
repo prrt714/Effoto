@@ -5,12 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
-public class MainView extends ImageView {
+import java.util.Random;
+
+public class MainView extends android.support.v7.widget.AppCompatImageView {
+
+	private static final int IMAGE_RESOURCE = getRandomImageResource();
 
 	public MainView(Context context) {
 		super(context);
+		setImageResource(IMAGE_RESOURCE);
 	}
 
 	public MainView(Context context, AttributeSet attrs) {
@@ -19,6 +23,7 @@ public class MainView extends ImageView {
 
 	public MainView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		setImageResource(IMAGE_RESOURCE);
 	}
 
 	@Override
@@ -35,4 +40,12 @@ public class MainView extends ImageView {
 		setImageDrawable(bd);
 	}
 
+	public static int getImageResource() {
+		return IMAGE_RESOURCE;
+	}
+
+	private static int getRandomImageResource() {
+		int[] array = new int[]{R.drawable.df1, R.drawable.df2};
+		return array[new Random().nextInt(array.length)];
+	}
 }
