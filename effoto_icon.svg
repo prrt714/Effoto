@@ -13,13 +13,13 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   width="1330.0042"
-   height="1330"
-   viewBox="0 0 1330.0041 1330.0001"
+   width="1190"
+   height="1189.1223"
+   viewBox="0 0 1190 1189.1224"
    sodipodi:docname="effoto_icon.svg"
-   inkscape:export-filename="/home/nont/Programs/workspace/Effoto1/app/src/main/res/drawable-ldpi/ic_launcher.png"
-   inkscape:export-xdpi="2.5984962"
-   inkscape:export-ydpi="2.5984962">
+   inkscape:export-filename="/home/nont/Programs/workspace/Effoto1/app/src/main/res/drawable-mdpi/ic_launcher.png"
+   inkscape:export-xdpi="3.8751271"
+   inkscape:export-ydpi="3.8751271">
   <metadata
      id="metadata8">
     <rdf:RDF>
@@ -28,7 +28,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1369,8 +1369,8 @@
      id="namedview4"
      showgrid="false"
      inkscape:zoom="0.1767767"
-     inkscape:cx="538.17548"
-     inkscape:cy="602.00651"
+     inkscape:cx="-400.60981"
+     inkscape:cy="737.27694"
      inkscape:window-x="43"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -1385,43 +1385,33 @@
      id="layer2"
      inkscape:label="Layer 2"
      style="display:inline;opacity:1"
-     transform="translate(-402.29068,-31.147804)" />
+     transform="translate(-503.86156,-81.021767)" />
   <g
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="Layer 4"
      style="display:none"
-     transform="translate(-402.29068,-31.147804)" />
+     transform="translate(-503.86156,-81.021767)" />
   <g
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="Layer 5"
      style="display:none"
-     transform="translate(-402.29068,-31.147804)" />
+     transform="translate(-503.86156,-81.021767)" />
   <g
      inkscape:groupmode="layer"
      id="layer6"
      inkscape:label="Layer 6"
-     transform="translate(-402.29068,-31.147804)"
+     transform="translate(-503.86156,-81.021767)"
      style="display:none" />
   <g
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Layer 3"
      style="display:inline"
-     transform="translate(-402.29068,-31.147804)">
+     transform="translate(-503.86156,-81.021767)">
     <g
        id="g6774">
-      <rect
-         inkscape:export-ydpi="9.41572"
-         inkscape:export-xdpi="9.41572"
-         inkscape:export-filename="/home/nont/Ubuntu One/g4929.png"
-         y="31.147804"
-         x="402.29068"
-         height="1330"
-         width="1330.0042"
-         id="rect5147"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:1.20413947;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <g
          transform="matrix(1.0726027,0,0,1.0726027,119.33449,-106.80107)"
          id="g6635">
@@ -2135,7 +2125,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      inkscape:label="Layer 7"
-     transform="translate(-402.29068,-31.147804)"
+     transform="translate(-503.86156,-81.021767)"
      style="display:none">
     <text
        xml:space="preserve"
