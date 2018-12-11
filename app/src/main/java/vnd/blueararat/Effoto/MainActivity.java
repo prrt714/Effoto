@@ -19,6 +19,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -37,6 +38,7 @@ import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -267,6 +269,17 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener {
 		// list.add(mActiveEffect);
 		// it = list.iterator();
 		update(bmp1, 0);
+
+		ViewGroup.LayoutParams params = getButtonLayout().getChildAt(0).getLayoutParams();
+		params.width = params.height = getButtonWidth();
+		getButtonLayout().getChildAt(0).setLayoutParams(params);
+	}
+
+	public int getButtonWidth() {
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		return Math.min(size.x, size.y)/7 - 3;
 	}
 
 	// @Override

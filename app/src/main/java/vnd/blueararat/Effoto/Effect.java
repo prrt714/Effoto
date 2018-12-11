@@ -1,8 +1,5 @@
 package vnd.blueararat.Effoto;
 
-import java.io.File;
-import java.util.Random;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,6 +17,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SlidingDrawer;
+
+import java.io.File;
+import java.util.Random;
 
 public abstract class Effect {
 
@@ -124,11 +124,13 @@ public abstract class Effect {
 				return true;
 			}
 		});
-
+		int buttonSize = ma.getButtonWidth();
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT,
-				LinearLayout.LayoutParams.WRAP_CONTENT);
+				buttonSize,
+				buttonSize);
 		layoutParams.setMargins(0, 0, 2, 0);
+		ib.setScaleType(ImageView.ScaleType.FIT_CENTER);
+		ib.setAdjustViewBounds(true);
 		ma.getButtonLayout().addView(ib, layoutParams);
 		View vw = ma.getParentLayout().findViewById(R.id.slidingDrawer);
 		if (vw != null) {
